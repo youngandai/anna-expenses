@@ -1,0 +1,492 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		186A8E620F46816F22C652E1 /* TransactionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2B35B290E6E2DE77898934 /* TransactionListView.swift */; };
+		22CCF28E78984D716A8C19EA /* TeacherListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56AC33DF0C1CECDA473204A /* TeacherListView.swift */; };
+		52DEAE3FA2526077EFA6F1B8 /* ClassFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586E0CB55C9EE34E97D3DC8A /* ClassFormView.swift */; };
+		686E86750B63B19484CAF71F /* AnnaExpensesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B926BCA287FB12246AF750A5 /* AnnaExpensesApp.swift */; };
+		6C16E390D1F545750C5ECE37 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B8517897CAEC3163BCF228 /* Student.swift */; };
+		6F87187908185DDC9117B712 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B4190A1E5A784EADBDD86E /* Package.swift */; };
+		70A27E79C320B688325E0D64 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A4B2F9A01A836C4D33B0EE /* DashboardView.swift */; };
+		83EE3F716F569591EA19B802 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A400423E7F8CDA03895943E /* DataStore.swift */; };
+		8831DED9D4277A38AEF2B174 /* ExpenseFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB86C7740FB3FB442B11980 /* ExpenseFormView.swift */; };
+		8BA2A88E23815F83DB798201 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296BDB7EBDD3CB9EAE03E1C5 /* ContentView.swift */; };
+		8FA0247900DDA3B87AD19F42 /* ClassSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D82287D5F35175FD25BEA9B /* ClassSession.swift */; };
+		96A2F94BCD5B066415DEFD09 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F97EC6E563007B5A9BDFB2 /* Transaction.swift */; };
+		9D1EF7C9BEB6E0797D3D947B /* PackageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23A142DC210589F8E8724C4 /* PackageListView.swift */; };
+		A1F2B517B7BEC260FCCE42DF /* TeacherPaymentCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED2A791592502247ECDDDD8 /* TeacherPaymentCalculator.swift */; };
+		AEDFB9D93332A7B44581256F /* StudentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E50723A8D4B42D34126B7F9 /* StudentDetailView.swift */; };
+		BBF6589440C356D81252BF7A /* TransactionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A2137A97C8747EF35A8A94 /* TransactionFormView.swift */; };
+		BC201140E9A139E0BEA62CCD /* TeacherDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B0E2CEBB1F2D20180EF614 /* TeacherDetailView.swift */; };
+		CB7B36DD65A532D27762A49D /* TeacherPaymentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9EAC2B3883F85B720BEA25 /* TeacherPaymentsView.swift */; };
+		CE627FFA68DFD0C00A40C288 /* CSVImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837CFA3A6E07A9E673CEAB93 /* CSVImporter.swift */; };
+		D634F841834FD2F94858CD27 /* StudentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D440352E5118BC25ECF2C992 /* StudentListView.swift */; };
+		D7810D3710CD6744005C9E7E /* PackageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E197AA06FC6390BFF5E35BF /* PackageDetailView.swift */; };
+		DD75F6627A9F89AAED1F366B /* ExpenseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E8CEE760745E64D8B4D674 /* ExpenseListView.swift */; };
+		E00BA39D7D59BE58610F6AA5 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B42871E916E5E6D183A51F7 /* Sidebar.swift */; };
+		E27D3FA4A8E14F20433402EC /* Teacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B1C5A634BAAF1F45A9767F /* Teacher.swift */; };
+		E6A229629CF9CFDAC9018ECA /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6134F6FD8D49D720545E3063 /* Expense.swift */; };
+		F0E667AC2331FF2C026503DE /* ClassListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2AFF2816B02E1C69888560 /* ClassListView.swift */; };
+		F93B42C5E7660BF5FECCC08F /* CSVImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66D787E3B837E3D06947DD4 /* CSVImportView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0D2AFF2816B02E1C69888560 /* ClassListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassListView.swift; sourceTree = "<group>"; };
+		1B2F94C2913D1B60C00B5D18 /* AnnaExpenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnnaExpenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		21F97EC6E563007B5A9BDFB2 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		27B4190A1E5A784EADBDD86E /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		296BDB7EBDD3CB9EAE03E1C5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2D82287D5F35175FD25BEA9B /* ClassSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassSession.swift; sourceTree = "<group>"; };
+		32B1C5A634BAAF1F45A9767F /* Teacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Teacher.swift; sourceTree = "<group>"; };
+		3E197AA06FC6390BFF5E35BF /* PackageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageDetailView.swift; sourceTree = "<group>"; };
+		586E0CB55C9EE34E97D3DC8A /* ClassFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassFormView.swift; sourceTree = "<group>"; };
+		5A400423E7F8CDA03895943E /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		6134F6FD8D49D720545E3063 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
+		68B8517897CAEC3163BCF228 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
+		7CB86C7740FB3FB442B11980 /* ExpenseFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseFormView.swift; sourceTree = "<group>"; };
+		837CFA3A6E07A9E673CEAB93 /* CSVImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVImporter.swift; sourceTree = "<group>"; };
+		85A2137A97C8747EF35A8A94 /* TransactionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFormView.swift; sourceTree = "<group>"; };
+		8E50723A8D4B42D34126B7F9 /* StudentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentDetailView.swift; sourceTree = "<group>"; };
+		98E8CEE760745E64D8B4D674 /* ExpenseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseListView.swift; sourceTree = "<group>"; };
+		9B42871E916E5E6D183A51F7 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
+		9D2B35B290E6E2DE77898934 /* TransactionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListView.swift; sourceTree = "<group>"; };
+		9F9EAC2B3883F85B720BEA25 /* TeacherPaymentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherPaymentsView.swift; sourceTree = "<group>"; };
+		A0B0E2CEBB1F2D20180EF614 /* TeacherDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherDetailView.swift; sourceTree = "<group>"; };
+		B56AC33DF0C1CECDA473204A /* TeacherListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherListView.swift; sourceTree = "<group>"; };
+		B926BCA287FB12246AF750A5 /* AnnaExpensesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnaExpensesApp.swift; sourceTree = "<group>"; };
+		C66D787E3B837E3D06947DD4 /* CSVImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVImportView.swift; sourceTree = "<group>"; };
+		D23A142DC210589F8E8724C4 /* PackageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageListView.swift; sourceTree = "<group>"; };
+		D440352E5118BC25ECF2C992 /* StudentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentListView.swift; sourceTree = "<group>"; };
+		E2A4B2F9A01A836C4D33B0EE /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		EED2A791592502247ECDDDD8 /* TeacherPaymentCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherPaymentCalculator.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0FDD47E3FE519745BF63EAF9 /* Expenses */ = {
+			isa = PBXGroup;
+			children = (
+				7CB86C7740FB3FB442B11980 /* ExpenseFormView.swift */,
+				98E8CEE760745E64D8B4D674 /* ExpenseListView.swift */,
+			);
+			path = Expenses;
+			sourceTree = "<group>";
+		};
+		361A1D286F58E88D0DD64014 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				3E197AA06FC6390BFF5E35BF /* PackageDetailView.swift */,
+				D23A142DC210589F8E8724C4 /* PackageListView.swift */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		656366F72E6661344D0D98E5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1B2F94C2913D1B60C00B5D18 /* AnnaExpenses.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		71566A28D18747D93A43F449 /* Teachers */ = {
+			isa = PBXGroup;
+			children = (
+				A0B0E2CEBB1F2D20180EF614 /* TeacherDetailView.swift */,
+				B56AC33DF0C1CECDA473204A /* TeacherListView.swift */,
+			);
+			path = Teachers;
+			sourceTree = "<group>";
+		};
+		730B6DBCB6FDDAF90D4D65E6 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				EED2A791592502247ECDDDD8 /* TeacherPaymentCalculator.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		81321F7D23BDB881645C5C98 /* Import */ = {
+			isa = PBXGroup;
+			children = (
+				C66D787E3B837E3D06947DD4 /* CSVImportView.swift */,
+			);
+			path = Import;
+			sourceTree = "<group>";
+		};
+		9BF924595E283A22541F208E /* Students */ = {
+			isa = PBXGroup;
+			children = (
+				8E50723A8D4B42D34126B7F9 /* StudentDetailView.swift */,
+				D440352E5118BC25ECF2C992 /* StudentListView.swift */,
+			);
+			path = Students;
+			sourceTree = "<group>";
+		};
+		B13ADCD9132E5E03DA056AE6 /* AnnaExpenses */ = {
+			isa = PBXGroup;
+			children = (
+				B926BCA287FB12246AF750A5 /* AnnaExpensesApp.swift */,
+				296BDB7EBDD3CB9EAE03E1C5 /* ContentView.swift */,
+				730B6DBCB6FDDAF90D4D65E6 /* Helpers */,
+				FF7E0C8CA0B5D6A0D38C3A06 /* Models */,
+				E9C68C1EF83788C07C9885FD /* Stores */,
+				D8E00B0102C5C21BCC9B83D7 /* Views */,
+			);
+			path = AnnaExpenses;
+			sourceTree = "<group>";
+		};
+		B5310D07D619E7EAE673A19B /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				586E0CB55C9EE34E97D3DC8A /* ClassFormView.swift */,
+				0D2AFF2816B02E1C69888560 /* ClassListView.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		D8E00B0102C5C21BCC9B83D7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9B42871E916E5E6D183A51F7 /* Sidebar.swift */,
+				B5310D07D619E7EAE673A19B /* Classes */,
+				E4551172D3BBD22772BA9002 /* Dashboard */,
+				0FDD47E3FE519745BF63EAF9 /* Expenses */,
+				81321F7D23BDB881645C5C98 /* Import */,
+				361A1D286F58E88D0DD64014 /* Packages */,
+				9BF924595E283A22541F208E /* Students */,
+				71566A28D18747D93A43F449 /* Teachers */,
+				ECFB1690A4052839660B28B4 /* Transactions */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E4551172D3BBD22772BA9002 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				E2A4B2F9A01A836C4D33B0EE /* DashboardView.swift */,
+				9F9EAC2B3883F85B720BEA25 /* TeacherPaymentsView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		E9C68C1EF83788C07C9885FD /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				837CFA3A6E07A9E673CEAB93 /* CSVImporter.swift */,
+				5A400423E7F8CDA03895943E /* DataStore.swift */,
+			);
+			path = Stores;
+			sourceTree = "<group>";
+		};
+		ECFB1690A4052839660B28B4 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				85A2137A97C8747EF35A8A94 /* TransactionFormView.swift */,
+				9D2B35B290E6E2DE77898934 /* TransactionListView.swift */,
+			);
+			path = Transactions;
+			sourceTree = "<group>";
+		};
+		F4C3AF59122AEF2B75C0E9F6 = {
+			isa = PBXGroup;
+			children = (
+				B13ADCD9132E5E03DA056AE6 /* AnnaExpenses */,
+				656366F72E6661344D0D98E5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FF7E0C8CA0B5D6A0D38C3A06 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2D82287D5F35175FD25BEA9B /* ClassSession.swift */,
+				6134F6FD8D49D720545E3063 /* Expense.swift */,
+				27B4190A1E5A784EADBDD86E /* Package.swift */,
+				68B8517897CAEC3163BCF228 /* Student.swift */,
+				32B1C5A634BAAF1F45A9767F /* Teacher.swift */,
+				21F97EC6E563007B5A9BDFB2 /* Transaction.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4878DC42EACE82146AA47530 /* AnnaExpenses */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B4959946ABA2B4CCB4F66BEC /* Build configuration list for PBXNativeTarget "AnnaExpenses" */;
+			buildPhases = (
+				BBD599BD0C17805EC672B25F /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AnnaExpenses;
+			packageProductDependencies = (
+			);
+			productName = AnnaExpenses;
+			productReference = 1B2F94C2913D1B60C00B5D18 /* AnnaExpenses.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1949373D04E233A72708255C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 981DBEE637189E3CA09D007F /* Build configuration list for PBXProject "AnnaExpenses" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = F4C3AF59122AEF2B75C0E9F6;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 656366F72E6661344D0D98E5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4878DC42EACE82146AA47530 /* AnnaExpenses */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BBD599BD0C17805EC672B25F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				686E86750B63B19484CAF71F /* AnnaExpensesApp.swift in Sources */,
+				F93B42C5E7660BF5FECCC08F /* CSVImportView.swift in Sources */,
+				CE627FFA68DFD0C00A40C288 /* CSVImporter.swift in Sources */,
+				52DEAE3FA2526077EFA6F1B8 /* ClassFormView.swift in Sources */,
+				F0E667AC2331FF2C026503DE /* ClassListView.swift in Sources */,
+				8FA0247900DDA3B87AD19F42 /* ClassSession.swift in Sources */,
+				8BA2A88E23815F83DB798201 /* ContentView.swift in Sources */,
+				70A27E79C320B688325E0D64 /* DashboardView.swift in Sources */,
+				83EE3F716F569591EA19B802 /* DataStore.swift in Sources */,
+				E6A229629CF9CFDAC9018ECA /* Expense.swift in Sources */,
+				8831DED9D4277A38AEF2B174 /* ExpenseFormView.swift in Sources */,
+				DD75F6627A9F89AAED1F366B /* ExpenseListView.swift in Sources */,
+				6F87187908185DDC9117B712 /* Package.swift in Sources */,
+				D7810D3710CD6744005C9E7E /* PackageDetailView.swift in Sources */,
+				9D1EF7C9BEB6E0797D3D947B /* PackageListView.swift in Sources */,
+				E00BA39D7D59BE58610F6AA5 /* Sidebar.swift in Sources */,
+				6C16E390D1F545750C5ECE37 /* Student.swift in Sources */,
+				AEDFB9D93332A7B44581256F /* StudentDetailView.swift in Sources */,
+				D634F841834FD2F94858CD27 /* StudentListView.swift in Sources */,
+				E27D3FA4A8E14F20433402EC /* Teacher.swift in Sources */,
+				BC201140E9A139E0BEA62CCD /* TeacherDetailView.swift in Sources */,
+				22CCF28E78984D716A8C19EA /* TeacherListView.swift in Sources */,
+				A1F2B517B7BEC260FCCE42DF /* TeacherPaymentCalculator.swift in Sources */,
+				CB7B36DD65A532D27762A49D /* TeacherPaymentsView.swift in Sources */,
+				96A2F94BCD5B066415DEFD09 /* Transaction.swift in Sources */,
+				BBF6589440C356D81252BF7A /* TransactionFormView.swift in Sources */,
+				186A8E620F46816F22C652E1 /* TransactionListView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0643FCE243F18AAC83BFD56F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.youngchingjui.AnnaExpenses;
+				PRODUCT_NAME = AnnaExpenses;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		4DC9378D8FD38357885B3D2E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		6A1D49FD9C10538B423E10FF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.youngchingjui.AnnaExpenses;
+				PRODUCT_NAME = AnnaExpenses;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		779563E360E0E0F2D6217E4A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		981DBEE637189E3CA09D007F /* Build configuration list for PBXProject "AnnaExpenses" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4DC9378D8FD38357885B3D2E /* Debug */,
+				779563E360E0E0F2D6217E4A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B4959946ABA2B4CCB4F66BEC /* Build configuration list for PBXNativeTarget "AnnaExpenses" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0643FCE243F18AAC83BFD56F /* Debug */,
+				6A1D49FD9C10538B423E10FF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1949373D04E233A72708255C /* Project object */;
+}

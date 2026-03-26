@@ -1,0 +1,23 @@
+name: AnnaExpenses
+options:
+  bundleIdPrefix: com.youngchingjui
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "16.4"
+targets:
+  AnnaExpenses:
+    type: application
+    platform: macOS
+    sources:
+      - AnnaExpenses
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.youngchingjui.AnnaExpenses
+        PRODUCT_NAME: AnnaExpenses
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGNING_REQUIRED: "NO"
+        CODE_SIGN_ENTITLEMENTS: ""
+        ENABLE_APP_SANDBOX: "NO"
+        GENERATE_INFOPLIST_FILE: "YES"
