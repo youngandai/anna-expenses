@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+.next/
+bun.lockb
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Swift
+.build/
+DerivedData/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
