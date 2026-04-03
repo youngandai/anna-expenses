@@ -23,10 +23,17 @@ struct ClassListView: View {
                     VStack(alignment: .trailing) {
                         Text(session.date, style: .date)
                             .font(.subheadline)
-                        if let pkg = store.package(for: session.packageID) {
-                            Text(pkg.name)
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                        HStack(spacing: 8) {
+                            if let duration = session.durationMinutes {
+                                Text("\(duration)min")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            if let pkg = store.package(for: session.packageID) {
+                                Text(pkg.name)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                     }
                 }

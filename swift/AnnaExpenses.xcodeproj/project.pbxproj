@@ -10,6 +10,7 @@
 		186A8E620F46816F22C652E1 /* TransactionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2B35B290E6E2DE77898934 /* TransactionListView.swift */; };
 		22CCF28E78984D716A8C19EA /* TeacherListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56AC33DF0C1CECDA473204A /* TeacherListView.swift */; };
 		52DEAE3FA2526077EFA6F1B8 /* ClassFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586E0CB55C9EE34E97D3DC8A /* ClassFormView.swift */; };
+		60598CB207A2E7553F96DC77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 230E7E8683C3AFDEB027CD9E /* Assets.xcassets */; };
 		686E86750B63B19484CAF71F /* AnnaExpensesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B926BCA287FB12246AF750A5 /* AnnaExpensesApp.swift */; };
 		6C16E390D1F545750C5ECE37 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B8517897CAEC3163BCF228 /* Student.swift */; };
 		6F87187908185DDC9117B712 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B4190A1E5A784EADBDD86E /* Package.swift */; };
@@ -18,6 +19,8 @@
 		8831DED9D4277A38AEF2B174 /* ExpenseFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB86C7740FB3FB442B11980 /* ExpenseFormView.swift */; };
 		8BA2A88E23815F83DB798201 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296BDB7EBDD3CB9EAE03E1C5 /* ContentView.swift */; };
 		8FA0247900DDA3B87AD19F42 /* ClassSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D82287D5F35175FD25BEA9B /* ClassSession.swift */; };
+		93F7B2072FDBCB695393555E /* RateBulkImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE70BC7C2367E292CBC9524 /* RateBulkImportView.swift */; };
+		955FB81FA8C96F8151931E88 /* Rate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A109F6A02125F970494A2D3 /* Rate.swift */; };
 		96A2F94BCD5B066415DEFD09 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F97EC6E563007B5A9BDFB2 /* Transaction.swift */; };
 		9D1EF7C9BEB6E0797D3D947B /* PackageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23A142DC210589F8E8724C4 /* PackageListView.swift */; };
 		A1F2B517B7BEC260FCCE42DF /* TeacherPaymentCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED2A791592502247ECDDDD8 /* TeacherPaymentCalculator.swift */; };
@@ -27,6 +30,7 @@
 		CB7B36DD65A532D27762A49D /* TeacherPaymentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9EAC2B3883F85B720BEA25 /* TeacherPaymentsView.swift */; };
 		CE627FFA68DFD0C00A40C288 /* CSVImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837CFA3A6E07A9E673CEAB93 /* CSVImporter.swift */; };
 		D634F841834FD2F94858CD27 /* StudentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D440352E5118BC25ECF2C992 /* StudentListView.swift */; };
+		D716EEB936580AE78A8179C9 /* RateFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F923C208E223DB555D934B /* RateFormView.swift */; };
 		D7810D3710CD6744005C9E7E /* PackageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E197AA06FC6390BFF5E35BF /* PackageDetailView.swift */; };
 		DD75F6627A9F89AAED1F366B /* ExpenseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E8CEE760745E64D8B4D674 /* ExpenseListView.swift */; };
 		E00BA39D7D59BE58610F6AA5 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B42871E916E5E6D183A51F7 /* Sidebar.swift */; };
@@ -34,21 +38,25 @@
 		E6A229629CF9CFDAC9018ECA /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6134F6FD8D49D720545E3063 /* Expense.swift */; };
 		F0E667AC2331FF2C026503DE /* ClassListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2AFF2816B02E1C69888560 /* ClassListView.swift */; };
 		F93B42C5E7660BF5FECCC08F /* CSVImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66D787E3B837E3D06947DD4 /* CSVImportView.swift */; };
+		FF9B6AC99F5DA988972A65B1 /* RateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8302CDDBDE805F62664DBA1 /* RateListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0D2AFF2816B02E1C69888560 /* ClassListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassListView.swift; sourceTree = "<group>"; };
 		1B2F94C2913D1B60C00B5D18 /* AnnaExpenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnnaExpenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21F97EC6E563007B5A9BDFB2 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		230E7E8683C3AFDEB027CD9E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		27B4190A1E5A784EADBDD86E /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		296BDB7EBDD3CB9EAE03E1C5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2D82287D5F35175FD25BEA9B /* ClassSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassSession.swift; sourceTree = "<group>"; };
 		32B1C5A634BAAF1F45A9767F /* Teacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Teacher.swift; sourceTree = "<group>"; };
 		3E197AA06FC6390BFF5E35BF /* PackageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageDetailView.swift; sourceTree = "<group>"; };
 		586E0CB55C9EE34E97D3DC8A /* ClassFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassFormView.swift; sourceTree = "<group>"; };
+		5A109F6A02125F970494A2D3 /* Rate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rate.swift; sourceTree = "<group>"; };
 		5A400423E7F8CDA03895943E /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		6134F6FD8D49D720545E3063 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
 		68B8517897CAEC3163BCF228 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
+		7BE70BC7C2367E292CBC9524 /* RateBulkImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateBulkImportView.swift; sourceTree = "<group>"; };
 		7CB86C7740FB3FB442B11980 /* ExpenseFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseFormView.swift; sourceTree = "<group>"; };
 		837CFA3A6E07A9E673CEAB93 /* CSVImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVImporter.swift; sourceTree = "<group>"; };
 		85A2137A97C8747EF35A8A94 /* TransactionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFormView.swift; sourceTree = "<group>"; };
@@ -61,10 +69,12 @@
 		B56AC33DF0C1CECDA473204A /* TeacherListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherListView.swift; sourceTree = "<group>"; };
 		B926BCA287FB12246AF750A5 /* AnnaExpensesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnaExpensesApp.swift; sourceTree = "<group>"; };
 		C66D787E3B837E3D06947DD4 /* CSVImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVImportView.swift; sourceTree = "<group>"; };
+		C8302CDDBDE805F62664DBA1 /* RateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateListView.swift; sourceTree = "<group>"; };
 		D23A142DC210589F8E8724C4 /* PackageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageListView.swift; sourceTree = "<group>"; };
 		D440352E5118BC25ECF2C992 /* StudentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentListView.swift; sourceTree = "<group>"; };
 		E2A4B2F9A01A836C4D33B0EE /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		EED2A791592502247ECDDDD8 /* TeacherPaymentCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherPaymentCalculator.swift; sourceTree = "<group>"; };
+		F2F923C208E223DB555D934B /* RateFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateFormView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -75,6 +85,16 @@
 				98E8CEE760745E64D8B4D674 /* ExpenseListView.swift */,
 			);
 			path = Expenses;
+			sourceTree = "<group>";
+		};
+		1E135DC318DBF024BBE2F216 /* Rates */ = {
+			isa = PBXGroup;
+			children = (
+				7BE70BC7C2367E292CBC9524 /* RateBulkImportView.swift */,
+				F2F923C208E223DB555D934B /* RateFormView.swift */,
+				C8302CDDBDE805F62664DBA1 /* RateListView.swift */,
+			);
+			path = Rates;
 			sourceTree = "<group>";
 		};
 		361A1D286F58E88D0DD64014 /* Packages */ = {
@@ -132,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				B926BCA287FB12246AF750A5 /* AnnaExpensesApp.swift */,
+				230E7E8683C3AFDEB027CD9E /* Assets.xcassets */,
 				296BDB7EBDD3CB9EAE03E1C5 /* ContentView.swift */,
 				730B6DBCB6FDDAF90D4D65E6 /* Helpers */,
 				FF7E0C8CA0B5D6A0D38C3A06 /* Models */,
@@ -159,6 +180,7 @@
 				0FDD47E3FE519745BF63EAF9 /* Expenses */,
 				81321F7D23BDB881645C5C98 /* Import */,
 				361A1D286F58E88D0DD64014 /* Packages */,
+				1E135DC318DBF024BBE2F216 /* Rates */,
 				9BF924595E283A22541F208E /* Students */,
 				71566A28D18747D93A43F449 /* Teachers */,
 				ECFB1690A4052839660B28B4 /* Transactions */,
@@ -207,6 +229,7 @@
 				2D82287D5F35175FD25BEA9B /* ClassSession.swift */,
 				6134F6FD8D49D720545E3063 /* Expense.swift */,
 				27B4190A1E5A784EADBDD86E /* Package.swift */,
+				5A109F6A02125F970494A2D3 /* Rate.swift */,
 				68B8517897CAEC3163BCF228 /* Student.swift */,
 				32B1C5A634BAAF1F45A9767F /* Teacher.swift */,
 				21F97EC6E563007B5A9BDFB2 /* Transaction.swift */,
@@ -222,6 +245,7 @@
 			buildConfigurationList = B4959946ABA2B4CCB4F66BEC /* Build configuration list for PBXNativeTarget "AnnaExpenses" */;
 			buildPhases = (
 				BBD599BD0C17805EC672B25F /* Sources */,
+				D7014EDF9C7E2FDFE3124840 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -264,6 +288,17 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		D7014EDF9C7E2FDFE3124840 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60598CB207A2E7553F96DC77 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		BBD599BD0C17805EC672B25F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -284,6 +319,10 @@
 				6F87187908185DDC9117B712 /* Package.swift in Sources */,
 				D7810D3710CD6744005C9E7E /* PackageDetailView.swift in Sources */,
 				9D1EF7C9BEB6E0797D3D947B /* PackageListView.swift in Sources */,
+				955FB81FA8C96F8151931E88 /* Rate.swift in Sources */,
+				93F7B2072FDBCB695393555E /* RateBulkImportView.swift in Sources */,
+				D716EEB936580AE78A8179C9 /* RateFormView.swift in Sources */,
+				FF9B6AC99F5DA988972A65B1 /* RateListView.swift in Sources */,
 				E00BA39D7D59BE58610F6AA5 /* Sidebar.swift in Sources */,
 				6C16E390D1F545750C5ECE37 /* Student.swift in Sources */,
 				AEDFB9D93332A7B44581256F /* StudentDetailView.swift in Sources */,

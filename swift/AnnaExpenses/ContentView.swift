@@ -6,6 +6,7 @@ enum SidebarSection: String, CaseIterable {
     case teachers = "Teachers"
     case packages = "Packages"
     case classes = "Classes"
+    case rates = "Rates"
     case transactions = "Transactions"
     case expenses = "Expenses"
     case teacherPayments = "Teacher Payments"
@@ -18,6 +19,7 @@ enum SidebarSection: String, CaseIterable {
         case .teachers: return "person.crop.rectangle"
         case .packages: return "shippingbox"
         case .classes: return "calendar"
+        case .rates: return "dollarsign.arrow.circlepath"
         case .transactions: return "creditcard"
         case .expenses: return "dollarsign.circle"
         case .teacherPayments: return "banknote"
@@ -28,7 +30,7 @@ enum SidebarSection: String, CaseIterable {
     var group: String {
         switch self {
         case .dashboard: return "Overview"
-        case .students, .teachers, .packages, .classes: return "Manage"
+        case .students, .teachers, .packages, .classes, .rates: return "Manage"
         case .transactions, .expenses, .teacherPayments: return "Finances"
         case .importCSV: return "Data"
         }
@@ -46,7 +48,7 @@ struct ContentView: View {
                         .tag(SidebarSection.dashboard)
                 }
                 Section("Manage") {
-                    ForEach([SidebarSection.students, .teachers, .packages, .classes], id: \.self) { item in
+                    ForEach([SidebarSection.students, .teachers, .packages, .classes, .rates], id: \.self) { item in
                         Label(item.rawValue, systemImage: item.icon)
                             .tag(item)
                     }
@@ -77,6 +79,8 @@ struct ContentView: View {
                     PackageListView()
                 case .classes:
                     ClassListView()
+                case .rates:
+                    RateListView()
                 case .transactions:
                     TransactionListView()
                 case .expenses:

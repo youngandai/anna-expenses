@@ -9,6 +9,7 @@ class DataStore {
     var sessions: [ClassSession] = []
     var transactions: [Transaction] = []
     var expenses: [Expense] = []
+    var rates: [Rate] = []
 
     private let fileManager = FileManager.default
 
@@ -41,6 +42,7 @@ class DataStore {
         write(sessions, to: "sessions.json")
         write(transactions, to: "transactions.json")
         write(expenses, to: "expenses.json")
+        write(rates, to: "rates.json")
     }
 
     func load() {
@@ -59,6 +61,7 @@ class DataStore {
         sessions = read([ClassSession].self, from: "sessions.json") ?? []
         transactions = read([Transaction].self, from: "transactions.json") ?? []
         expenses = read([Expense].self, from: "expenses.json") ?? []
+        rates = read([Rate].self, from: "rates.json") ?? []
     }
 
     // MARK: - Convenience lookups
@@ -85,5 +88,9 @@ class DataStore {
 
     func classesUsed(for packageID: UUID) -> Int {
         sessions.filter { $0.packageID == packageID }.count
+    }
+
+    func rates(for teacherID: UUID) -> [Rate] {
+        rates.filter { $0.teacherID == teacherID }
     }
 }

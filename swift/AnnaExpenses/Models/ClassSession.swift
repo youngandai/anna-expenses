@@ -6,5 +6,6 @@ struct ClassSession: Identifiable, Codable, Hashable {
     var studentID: UUID
     var teacherID: UUID
     var date: Date
+    var durationMinutes: Int?
     var notes: String?
 }

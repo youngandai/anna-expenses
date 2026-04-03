@@ -11,8 +11,12 @@ bun.lockb
 # Swift
 .build/
 DerivedData/
+swift/build/
 *.xcuserstate
 *.xcworkspace/xcuserdata/
+
+# Build artifacts
+AnnaExpenses.app/
 
 # IDE
 .idea/

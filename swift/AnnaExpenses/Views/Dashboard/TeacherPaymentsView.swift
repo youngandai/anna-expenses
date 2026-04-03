@@ -9,7 +9,7 @@ struct TeacherPaymentsView: View {
     private var payments: [TeacherPayment] {
         TeacherPaymentCalculator.calculate(
             sessions: store.sessions,
-            packages: store.packages,
+            rates: store.rates,
             month: selectedMonth
         )
     }
@@ -49,16 +49,19 @@ struct TeacherPaymentsView: View {
                             ForEach(payment.breakdown.indices, id: \.self) { idx in
                                 let bd = payment.breakdown[idx]
                                 HStack {
-                                    if let pkg = store.package(for: bd.packageID) {
-                                        Text(pkg.name)
-                                    } else {
-                                        Text("Unknown Package")
-                                    }
+                                    Text(bd.date, style: .date)
+                                        .frame(width: 100, alignment: .leading)
+                                    Text("\(bd.durationMinutes)min")
+                                        .frame(width: 50)
+                                    Text(bd.rateName)
                                     Spacer()
-                                    Text("\(bd.sessionsForTeacher)/\(bd.totalSessions) sessions")
-                                        .foregroundStyle(.secondary)
-                                    Text(String(format: "%.2f", bd.teacherShare))
-                                        .monospacedDigit()
+                                    if bd.rateAmount > 0 {
+                                        Text(String(format: "%.2f", bd.payment))
+                                            .monospacedDigit()
+                                    } else {
+                                        Text("—")
+                                            .foregroundStyle(.secondary)
+                                    }
                                 }
                                 .font(.caption)
                             }
@@ -69,7 +72,10 @@ struct TeacherPaymentsView: View {
                                 Spacer()
                                 Text("\(payment.sessionCount) classes")
                                     .foregroundStyle(.secondary)
-                                Text(String(format: "%.2f", payment.amount))
+                                let hours = Double(payment.totalMinutes) / 60.0
+                                Text(String(format: "%.1fh", hours))
+                                    .foregroundStyle(.secondary)
+                                Text(String(format: "%.2f %@", payment.amount, payment.currency))
                                     .font(.headline)
                                     .monospacedDigit()
                             }

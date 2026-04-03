@@ -78,7 +78,7 @@ enum CSVImporter {
 
     // MARK: - CSV Parsing Helper
 
-    private static func parseLine(_ line: String) -> [String] {
+    static func parseLine(_ line: String) -> [String] {
         var result: [String] = []
         var current = ""
         var inQuotes = false

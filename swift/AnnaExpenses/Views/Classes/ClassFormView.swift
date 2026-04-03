@@ -7,7 +7,10 @@ struct ClassFormView: View {
     @State private var teacherID: UUID?
     @State private var packageID: UUID?
     @State private var date = Date()
+    @State private var durationMinutes = 60
     @State private var notes = ""
+
+    private let durations = [30, 45, 60, 90, 120]
 
     private var availablePackages: [Package] {
         guard let sid = studentID else { return [] }
@@ -44,6 +47,13 @@ struct ClassFormView: View {
                 }
 
                 DatePicker("Date", selection: $date, displayedComponents: .date)
+
+                Picker("Duration", selection: $durationMinutes) {
+                    ForEach(durations, id: \.self) { d in
+                        Text("\(d) min").tag(d)
+                    }
+                }
+
                 TextField("Notes", text: $notes, axis: .vertical)
                     .lineLimit(2)
             }
@@ -60,6 +70,7 @@ struct ClassFormView: View {
                         studentID: sid,
                         teacherID: tid,
                         date: date,
+                        durationMinutes: durationMinutes,
                         notes: notes.isEmpty ? nil : notes
                     )
                     store.sessions.append(session)

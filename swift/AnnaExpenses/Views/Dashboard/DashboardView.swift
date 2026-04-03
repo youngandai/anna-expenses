@@ -35,7 +35,7 @@ struct DashboardView: View {
     private var teacherPayments: [TeacherPayment] {
         TeacherPaymentCalculator.calculate(
             sessions: store.sessions,
-            packages: store.packages,
+            rates: store.rates,
             month: selectedMonth
         )
     }
