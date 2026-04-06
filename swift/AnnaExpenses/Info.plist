@@ -21,6 +21,6 @@
 	<key>SUFeedURL</key>
 	<string>https://youngandai.github.io/mac-app-releases/anna-expenses/appcast.xml</string>
 	<key>SUPublicEDKey</key>
-	<string>$(SPARKLE_ED_PUBLIC_KEY)</string>
+	<string>RBro588JTUjkeuMU0a6bmOU98iWamtLh8ydiSfLEVug=</string>
 </dict>
 </plist>
