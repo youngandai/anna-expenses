@@ -48,7 +48,9 @@ APP_DIR="build/${APP_NAME}.app"
 
 echo "Copying built .app bundle..."
 rm -rf "$APP_DIR"
-cp -R "$BUILD_APP" "$APP_DIR"
+# Using ditto for consistency with the rest of this script (lines 116, 145).
+# cp -R also preserves xattrs on macOS and works fine for this app — tested 2026-04-06.
+ditto "$BUILD_APP" "$APP_DIR"
 
 CONTENTS="${APP_DIR}/Contents"
 SPARKLE_FW="${CONTENTS}/Frameworks/Sparkle.framework"
