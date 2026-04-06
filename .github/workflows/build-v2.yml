@@ -105,7 +105,7 @@ concurrency:
 env:
   # ── App identity ──
   APP_NAME: AnnaExpenses
-  BUNDLE_ID: com.youngchingjui.AnnaExpenses
+  BUNDLE_ID: com.youngandai.AnnaExpenses
   XCODE_PROJECT: swift/AnnaExpenses.xcodeproj
   XCODE_SCHEME: AnnaExpenses
 
