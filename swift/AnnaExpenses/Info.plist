@@ -19,7 +19,7 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>SUFeedURL</key>
-	<string>https://youngchingjui.github.io/mac-app-releases/anna-expenses/appcast.xml</string>
+	<string>https://youngandai.github.io/mac-app-releases/anna-expenses/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>$(SPARKLE_ED_PUBLIC_KEY)</string>
 </dict>

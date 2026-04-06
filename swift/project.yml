@@ -33,5 +33,5 @@ targets:
     info:
       path: AnnaExpenses/Info.plist
       properties:
-        SUFeedURL: "https://youngchingjui.github.io/mac-app-releases/anna-expenses/appcast.xml"
+        SUFeedURL: "https://youngandai.github.io/mac-app-releases/anna-expenses/appcast.xml"
         SUPublicEDKey: "RBro588JTUjkeuMU0a6bmOU98iWamtLh8ydiSfLEVug="

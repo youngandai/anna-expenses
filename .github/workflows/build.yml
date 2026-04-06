@@ -101,7 +101,7 @@ jobs:
                 <sparkle:shortVersionString>${VERSION}</sparkle:shortVersionString>
                 <pubDate>${PUBDATE}</pubDate>
                 <enclosure
-                  url="https://github.com/youngchingjui/mac-app-releases/releases/download/anna-expenses-v${VERSION}/AnnaExpenses.app.zip"
+                  url="https://github.com/youngandai/mac-app-releases/releases/download/anna-expenses-v${VERSION}/AnnaExpenses.app.zip"
                   type="application/octet-stream"
                   ${SPARKLE_SIG}
                 />
@@ -129,14 +129,14 @@ jobs:
         run: |
           VERSION="${GITHUB_REF#refs/tags/v}"
           gh release create "anna-expenses-v${VERSION}" \
-            --repo youngchingjui/mac-app-releases \
+            --repo youngandai/mac-app-releases \
             --title "AnnaExpenses v${VERSION}" \
             --notes "AnnaExpenses v${VERSION}" \
             build/AnnaExpenses.app.zip
           # Push appcast.xml for GitHub Pages
           cd /tmp
           rm -rf mac-app-releases
-          git clone https://x-access-token:${GH_TOKEN}@github.com/youngchingjui/mac-app-releases.git
+          git clone https://x-access-token:${GH_TOKEN}@github.com/youngandai/mac-app-releases.git
           cp ${GITHUB_WORKSPACE}/build/appcast.xml mac-app-releases/anna-expenses/appcast.xml
           cd mac-app-releases
           git config user.name "github-actions[bot]"
