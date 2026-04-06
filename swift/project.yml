@@ -1,6 +1,6 @@
 name: AnnaExpenses
 options:
-  bundleIdPrefix: com.youngchingjui
+  bundleIdPrefix: com.youngandai
   deploymentTarget:
     macOS: "14.0"
   xcodeVersion: "16.4"
@@ -18,7 +18,7 @@ targets:
       - package: Sparkle
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.youngchingjui.AnnaExpenses
+        PRODUCT_BUNDLE_IDENTIFIER: com.youngandai.AnnaExpenses
         PRODUCT_NAME: AnnaExpenses
         SWIFT_VERSION: "5.9"
         MACOSX_DEPLOYMENT_TARGET: "14.0"
