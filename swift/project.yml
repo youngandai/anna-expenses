@@ -31,6 +31,7 @@ targets:
         GENERATE_INFOPLIST_FILE: "YES"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     info:
+      path: AnnaExpenses/Info.plist
       properties:
-        SUFeedURL: "https://youngchingjui.github.io/anna-expenses/appcast.xml"
-        SUPublicEDKey: "$(SPARKLE_ED_PUBLIC_KEY)"
+        SUFeedURL: "https://youngchingjui.github.io/mac-app-releases/anna-expenses/appcast.xml"
+        SUPublicEDKey: "RBro588JTUjkeuMU0a6bmOU98iWamtLh8ydiSfLEVug="
