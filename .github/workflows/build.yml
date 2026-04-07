@@ -1,9 +1,7 @@
 name: Build AnnaExpenses
 
 on:
-  push:
-    branches: [main]
-    tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -137,6 +135,7 @@ jobs:
           cd /tmp
           rm -rf mac-app-releases
           git clone https://x-access-token:${GH_TOKEN}@github.com/youngandai/mac-app-releases.git
+          mkdir -p mac-app-releases/anna-expenses
           cp ${GITHUB_WORKSPACE}/build/appcast.xml mac-app-releases/anna-expenses/appcast.xml
           cd mac-app-releases
           git config user.name "github-actions[bot]"
