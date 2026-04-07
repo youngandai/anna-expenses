@@ -55,6 +55,9 @@ struct PackageListView: View {
         .sheet(isPresented: $showingAddSheet) {
             PackageFormView()
         }
+        .onReceive(NotificationCenter.default.publisher(for: .triggerAddItem)) { _ in
+            showingAddSheet = true
+        }
     }
 }
 

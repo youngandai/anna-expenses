@@ -56,6 +56,9 @@ struct StudentListView: View {
         .sheet(isPresented: $showingAddSheet) {
             StudentFormView()
         }
+        .onReceive(NotificationCenter.default.publisher(for: .triggerAddItem)) { _ in
+            showingAddSheet = true
+        }
     }
 }
 

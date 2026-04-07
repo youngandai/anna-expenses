@@ -79,5 +79,8 @@ struct RateListView: View {
         .sheet(isPresented: $showingBulkImport) {
             RateBulkImportView()
         }
+        .onReceive(NotificationCenter.default.publisher(for: .triggerAddItem)) { _ in
+            showingAddSheet = true
+        }
     }
 }

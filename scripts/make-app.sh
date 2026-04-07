@@ -141,11 +141,26 @@ else
     fi
 fi
 
+# --- Create DMG ---
+echo "Creating DMG..."
+DMG_PATH="build/${APP_NAME}-${VERSION}.dmg"
+rm -f "$DMG_PATH"
+create-dmg \
+  --volname "$APP_NAME" \
+  --window-pos 200 120 \
+  --window-size 600 400 \
+  --icon-size 100 \
+  --icon "$APP_NAME.app" 150 190 \
+  --app-drop-link 450 190 \
+  "$DMG_PATH" \
+  "$APP_DIR"
+echo "DMG created at ${DMG_PATH}"
+
 if [ -z "$CI" ]; then
     echo "Installing to /Applications..."
     rm -rf "/Applications/${APP_NAME}.app"
     ditto "$APP_DIR" "/Applications/${APP_NAME}.app"
     echo "Done! Installed at /Applications/${APP_NAME}.app"
 else
-    echo "Done! App bundle at ${APP_DIR}"
+    echo "Done! App bundle at ${APP_DIR}, DMG at ${DMG_PATH}"
 fi

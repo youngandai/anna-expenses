@@ -77,5 +77,8 @@ struct TransactionListView: View {
         .sheet(isPresented: $showingAddSheet) {
             TransactionFormView()
         }
+        .onReceive(NotificationCenter.default.publisher(for: .triggerAddItem)) { _ in
+            showingAddSheet = true
+        }
     }
 }

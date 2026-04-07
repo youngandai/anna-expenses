@@ -39,6 +39,7 @@
 		E6A229629CF9CFDAC9018ECA /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6134F6FD8D49D720545E3063 /* Expense.swift */; };
 		F0E667AC2331FF2C026503DE /* ClassListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2AFF2816B02E1C69888560 /* ClassListView.swift */; };
 		F93B42C5E7660BF5FECCC08F /* CSVImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66D787E3B837E3D06947DD4 /* CSVImportView.swift */; };
+		FACDDC1B7C7A4A2E6D1EE92B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1B51BD77C3AF935A87656B /* SettingsView.swift */; };
 		FDBD67D5D03310E43F5B74B2 /* CheckForUpdatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BED1EF1FB2E6E5E029D4DD1 /* CheckForUpdatesView.swift */; };
 		FF9B6AC99F5DA988972A65B1 /* RateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8302CDDBDE805F62664DBA1 /* RateListView.swift */; };
 /* End PBXBuildFile section */
@@ -74,6 +75,7 @@
 		B926BCA287FB12246AF750A5 /* AnnaExpensesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnaExpensesApp.swift; sourceTree = "<group>"; };
 		C66D787E3B837E3D06947DD4 /* CSVImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVImportView.swift; sourceTree = "<group>"; };
 		C8302CDDBDE805F62664DBA1 /* RateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateListView.swift; sourceTree = "<group>"; };
+		CA1B51BD77C3AF935A87656B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D23A142DC210589F8E8724C4 /* PackageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageListView.swift; sourceTree = "<group>"; };
 		D440352E5118BC25ECF2C992 /* StudentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentListView.swift; sourceTree = "<group>"; };
 		E2A4B2F9A01A836C4D33B0EE /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				2BED1EF1FB2E6E5E029D4DD1 /* CheckForUpdatesView.swift */,
+				CA1B51BD77C3AF935A87656B /* SettingsView.swift */,
 				9B42871E916E5E6D183A51F7 /* Sidebar.swift */,
 				B5310D07D619E7EAE673A19B /* Classes */,
 				E4551172D3BBD22772BA9002 /* Dashboard */,
@@ -346,6 +349,7 @@
 				93F7B2072FDBCB695393555E /* RateBulkImportView.swift in Sources */,
 				D716EEB936580AE78A8179C9 /* RateFormView.swift in Sources */,
 				FF9B6AC99F5DA988972A65B1 /* RateListView.swift in Sources */,
+				FACDDC1B7C7A4A2E6D1EE92B /* SettingsView.swift in Sources */,
 				E00BA39D7D59BE58610F6AA5 /* Sidebar.swift in Sources */,
 				6C16E390D1F545750C5ECE37 /* Student.swift in Sources */,
 				AEDFB9D93332A7B44581256F /* StudentDetailView.swift in Sources */,

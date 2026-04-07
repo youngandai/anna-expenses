@@ -85,6 +85,12 @@ struct TeacherPaymentsView: View {
             }
         }
         .navigationTitle("Teacher Payments")
+        .onReceive(NotificationCenter.default.publisher(for: .navigatePreviousMonth)) { _ in
+            changeMonth(by: -1)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .navigateNextMonth)) { _ in
+            changeMonth(by: 1)
+        }
     }
 
     private func changeMonth(by value: Int) {

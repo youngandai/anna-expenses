@@ -17,6 +17,7 @@ swift/build/
 
 # Build artifacts
 AnnaExpenses.app/
+*.dmg
 
 # IDE
 .idea/

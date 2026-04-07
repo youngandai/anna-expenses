@@ -9,6 +9,23 @@ struct RateBulkImportView: View {
     @State private var importedCount = 0
     @State private var previewRates: [(teacherName: String, subject: String, duration: Int, amount: Double, currency: String)] = []
     @State private var csvContent: String?
+    @State private var showingAIInstructions = false
+
+    private let aiInstructions = """
+    Convert my data into a CSV file with exactly 5 columns and a header row.
+
+    Header: teacher_name,subject,duration_minutes,amount,currency
+    - teacher_name: full name of the teacher
+    - subject: subject or lesson type
+    - duration_minutes: class length in minutes (e.g. 30, 60, 90)
+    - amount: payment amount as a number
+    - currency: 3-letter currency code (e.g. RUB, AED, USD)
+
+    Example:
+    teacher_name,subject,duration_minutes,amount,currency
+    Anna Smith,English,60,2000,RUB
+    Anna Smith,Exam Prep,30,1500,RUB
+    """
 
     var body: some View {
         VStack(spacing: 16) {
@@ -38,6 +55,33 @@ struct RateBulkImportView: View {
                 }
                 .padding()
                 .frame(maxWidth: .infinity)
+            }
+
+            // AI Instructions panel
+            GroupBox {
+                DisclosureGroup("AI Instructions", isExpanded: $showingAIInstructions) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Copy these instructions to your AI to reformat your data:")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+
+                        Text(aiInstructions)
+                            .font(.system(.caption, design: .monospaced))
+                            .textSelection(.enabled)
+                            .padding(8)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(.background)
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+
+                        Button("Copy to Clipboard") {
+                            NSPasteboard.general.clearContents()
+                            NSPasteboard.general.setString(aiInstructions, forType: .string)
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                    .padding(.top, 8)
+                }
+                .padding(4)
             }
 
             if !previewRates.isEmpty {

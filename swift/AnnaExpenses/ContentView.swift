@@ -39,7 +39,6 @@ enum SidebarSection: String, CaseIterable {
 
 struct ContentView: View {
     @State private var selection: SidebarSection? = .dashboard
-
     var body: some View {
         NavigationSplitView {
             List(selection: $selection) {
@@ -97,5 +96,15 @@ struct ContentView: View {
             .frame(minWidth: 600)
         }
         .frame(minWidth: 900, minHeight: 600)
+        .onReceive(NotificationCenter.default.publisher(for: .navigateToSection)) { notification in
+            if let section = notification.object as? SidebarSection {
+                selection = section
+            }
+        }
     }
+
+}
+
+extension Notification.Name {
+    static let triggerAddItem = Notification.Name("triggerAddItem")
 }

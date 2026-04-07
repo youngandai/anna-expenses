@@ -114,6 +114,12 @@ struct DashboardView: View {
             .padding()
         }
         .navigationTitle("Dashboard")
+        .onReceive(NotificationCenter.default.publisher(for: .navigatePreviousMonth)) { _ in
+            changeMonth(by: -1)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .navigateNextMonth)) { _ in
+            changeMonth(by: 1)
+        }
     }
 
     private var monthlySessions: [ClassSession] {

@@ -215,23 +215,32 @@ jobs:
       # 4. PACKAGE
       #
       # ditto creates a proper macOS zip that preserves resource
-      # forks and extended attributes.
+      # forks and extended attributes. The zip is used for Sparkle
+      # updates. The DMG is created by make-app.sh for user downloads.
       # ────────────────────────────────────────────────────────
       - name: Create ZIP archive
         run: |
           ditto -c -k --keepParent \
             "build/$APP_NAME.app" \
             "build/$APP_NAME.app.zip"
-          echo "Archive size: $(du -h "build/$APP_NAME.app.zip" | cut -f1)"
+          echo "ZIP size: $(du -h "build/$APP_NAME.app.zip" | cut -f1)"
+          echo "DMG size: $(du -h "build/$APP_NAME-${{ steps.version.outputs.version }}.dmg" | cut -f1)"
 
       # ────────────────────────────────────────────────────────
       # 5. UPLOAD ARTIFACT (all builds)
       # ────────────────────────────────────────────────────────
-      - name: Upload build artifact
+      - name: Upload build artifact (ZIP)
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.APP_NAME }}-${{ steps.version.outputs.version }}
           path: build/${{ env.APP_NAME }}.app.zip
+          retention-days: 90
+
+      - name: Upload build artifact (DMG)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-dmg
+          path: build/${{ env.APP_NAME }}-${{ steps.version.outputs.version }}.dmg
           retention-days: 90
 
       # ────────────────────────────────────────────────────────
@@ -329,6 +338,7 @@ jobs:
             --title "$APP_NAME v${VERSION}" \
             --generate-notes \
             "build/$APP_NAME.app.zip" \
+            "build/$APP_NAME-${VERSION}.dmg" \
             build/appcast.xml
 
       - name: Publish to mac-app-releases
@@ -342,7 +352,8 @@ jobs:
             --repo "$RELEASES_REPO" \
             --title "$APP_NAME v${VERSION}" \
             --notes "$APP_NAME v${VERSION}" \
-            "build/$APP_NAME.app.zip"
+            "build/$APP_NAME.app.zip" \
+            "build/$APP_NAME-${VERSION}.dmg"
 
           # Update appcast.xml in the repo (served via GitHub Pages)
           CLONE_DIR="$RUNNER_TEMP/mac-app-releases"

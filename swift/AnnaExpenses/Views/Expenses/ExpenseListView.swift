@@ -71,6 +71,9 @@ struct ExpenseListView: View {
         .sheet(isPresented: $showingAddSheet) {
             ExpenseFormView()
         }
+        .onReceive(NotificationCenter.default.publisher(for: .triggerAddItem)) { _ in
+            showingAddSheet = true
+        }
     }
 
     private func categoryColor(_ category: ExpenseCategory) -> Color {

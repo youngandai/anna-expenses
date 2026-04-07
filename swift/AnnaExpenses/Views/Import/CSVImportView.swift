@@ -7,6 +7,7 @@ struct CSVImportView: View {
     @State private var showingFilePicker = false
     @State private var importResult: String?
     @State private var importedCount = 0
+    @State private var showingAIInstructions = false
 
     enum ImportType: String, CaseIterable {
         case transactions = "Bank Transactions"
@@ -14,54 +15,82 @@ struct CSVImportView: View {
     }
 
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Import CSV Data")
-                .font(.title2.bold())
+        ScrollView {
+            VStack(spacing: 20) {
+                Text("Import CSV Data")
+                    .font(.title2.bold())
 
-            Picker("Import Type", selection: $importType) {
-                ForEach(ImportType.allCases, id: \.self) { type in
-                    Text(type.rawValue).tag(type)
-                }
-            }
-            .pickerStyle(.segmented)
-            .frame(width: 400)
-
-            GroupBox {
-                VStack(spacing: 12) {
-                    Image(systemName: "doc.text")
-                        .font(.system(size: 40))
-                        .foregroundStyle(.secondary)
-
-                    Text(formatDescription)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-
-                    Button("Select CSV File") {
-                        showingFilePicker = true
+                Picker("Import Type", selection: $importType) {
+                    ForEach(ImportType.allCases, id: \.self) { type in
+                        Text(type.rawValue).tag(type)
                     }
-                    .buttonStyle(.borderedProminent)
                 }
-                .padding()
-                .frame(maxWidth: .infinity)
-            }
-            .frame(width: 500)
+                .pickerStyle(.segmented)
+                .frame(width: 500)
 
-            if let result = importResult {
                 GroupBox {
-                    HStack {
-                        Image(systemName: importedCount > 0 ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
-                            .foregroundStyle(importedCount > 0 ? .green : .orange)
-                        Text(result)
+                    VStack(spacing: 12) {
+                        Image(systemName: "doc.text")
+                            .font(.system(size: 40))
+                            .foregroundStyle(.secondary)
+
+                        Text(formatDescription)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+
+                        Button("Select CSV File") {
+                            showingFilePicker = true
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                }
+                .frame(width: 500)
+
+                // AI Instructions panel
+                GroupBox {
+                    DisclosureGroup("AI Instructions", isExpanded: $showingAIInstructions) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Copy these instructions to your AI to reformat your data:")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+
+                            Text(aiInstructions)
+                                .font(.system(.caption, design: .monospaced))
+                                .textSelection(.enabled)
+                                .padding(8)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(.background)
+                                .clipShape(RoundedRectangle(cornerRadius: 6))
+
+                            Button("Copy to Clipboard") {
+                                NSPasteboard.general.clearContents()
+                                NSPasteboard.general.setString(aiInstructions, forType: .string)
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                        .padding(.top, 8)
                     }
                     .padding(4)
                 }
                 .frame(width: 500)
-            }
 
-            Spacer()
+                if let result = importResult {
+                    GroupBox {
+                        HStack {
+                            Image(systemName: importedCount > 0 ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                                .foregroundStyle(importedCount > 0 ? .green : .orange)
+                            Text(result)
+                        }
+                        .padding(4)
+                    }
+                    .frame(width: 500)
+                }
+            }
+            .padding()
         }
-        .padding()
         .navigationTitle("Import CSV")
         .fileImporter(
             isPresented: $showingFilePicker,
@@ -78,6 +107,39 @@ struct CSVImportView: View {
             return "Expected columns: date, amount, description\nDate format: YYYY-MM-DD"
         case .attendance:
             return "Expected columns: date, student_name, teacher_name\nDate format: YYYY-MM-DD"
+        }
+    }
+
+    private var aiInstructions: String {
+        switch importType {
+        case .transactions:
+            return """
+            Convert my data into a CSV file with exactly 3 columns and a header row.
+
+            Header: date,amount,description
+            - date: YYYY-MM-DD format
+            - amount: number (positive for income, negative for expenses)
+            - description: text, wrap in quotes if it contains commas
+
+            Example:
+            date,amount,description
+            2025-03-15,5000,"Student payment, March"
+            2025-03-16,-200,Office supplies
+            """
+        case .attendance:
+            return """
+            Convert my data into a CSV file with exactly 3 columns and a header row.
+
+            Header: date,student_name,teacher_name
+            - date: YYYY-MM-DD format
+            - student_name: full name of the student
+            - teacher_name: full name of the teacher
+
+            Example:
+            date,student_name,teacher_name
+            2025-03-15,Maria Ivanova,Anna Smith
+            2025-03-16,John Doe,Anna Smith
+            """
         }
     }
 
