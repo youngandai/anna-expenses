@@ -67,18 +67,29 @@ struct TeacherFormView: View {
     @State private var paymentDetails = ""
 
     var body: some View {
-        VStack(spacing: 16) {
-            Text("Add Teacher")
-                .font(.title2.bold())
+        RecordSheetContainer(title: "Add Teacher", width: 440) {
+            RecordSheetCard {
+                formRow("Name") {
+                    TextField("Name", text: $name)
+                        .textFieldStyle(.roundedBorder)
+                }
 
-            Form {
-                TextField("Name", text: $name)
-                TextField("Email", text: $email)
-                TextField("Payment Details", text: $paymentDetails, axis: .vertical)
-                    .lineLimit(3)
+                Divider()
+
+                formRow("Email") {
+                    TextField("Email", text: $email)
+                        .textFieldStyle(.roundedBorder)
+                }
+
+                Divider()
+
+                formRow("Payment Details") {
+                    TextField("Payment Details", text: $paymentDetails, axis: .vertical)
+                        .textFieldStyle(.roundedBorder)
+                        .lineLimit(2...4)
+                }
             }
-            .formStyle(.grouped)
-
+        } actions: {
             HStack {
                 Button("Cancel") { dismiss() }
                     .keyboardShortcut(.cancelAction)
@@ -96,8 +107,19 @@ struct TeacherFormView: View {
                 .keyboardShortcut(.defaultAction)
                 .disabled(name.isEmpty)
             }
-            .padding()
         }
-        .frame(width: 400, height: 250)
+    }
+
+    @ViewBuilder
+    private func formRow<Content: View>(_ label: String, @ViewBuilder content: () -> Content) -> some View {
+        HStack(alignment: .center, spacing: 16) {
+            Text(label)
+                .frame(width: 150, alignment: .leading)
+
+            content()
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 }

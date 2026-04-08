@@ -18,47 +18,77 @@ struct ClassFormView: View {
     }
 
     var body: some View {
-        VStack(spacing: 16) {
-            Text("Record Class Session")
-                .font(.title2.bold())
-
-            Form {
-                Picker("Student", selection: $studentID) {
-                    Text("Select Student").tag(UUID?.none)
-                    ForEach(store.students.sorted { $0.name < $1.name }) { student in
-                        Text(student.name).tag(UUID?.some(student.id))
+        RecordSheetContainer(title: "Record Class Session", width: 520) {
+            RecordSheetCard {
+                formRow("Student") {
+                    Picker("", selection: $studentID) {
+                        Text("Select Student").tag(UUID?.none)
+                        ForEach(store.students.sorted { $0.name < $1.name }) { student in
+                            Text(student.name).tag(UUID?.some(student.id))
+                        }
                     }
+                    .labelsHidden()
+                    .frame(width: 200, alignment: .trailing)
                 }
                 .onChange(of: studentID) { _, _ in packageID = nil }
 
-                Picker("Teacher", selection: $teacherID) {
-                    Text("Select Teacher").tag(UUID?.none)
-                    ForEach(store.teachers.sorted { $0.name < $1.name }) { teacher in
-                        Text(teacher.name).tag(UUID?.some(teacher.id))
+                Divider()
+
+                formRow("Teacher") {
+                    Picker("", selection: $teacherID) {
+                        Text("Select Teacher").tag(UUID?.none)
+                        ForEach(store.teachers.sorted { $0.name < $1.name }) { teacher in
+                            Text(teacher.name).tag(UUID?.some(teacher.id))
+                        }
                     }
+                    .labelsHidden()
+                    .frame(width: 200, alignment: .trailing)
                 }
 
-                Picker("Package", selection: $packageID) {
-                    Text("Select Package").tag(UUID?.none)
-                    ForEach(availablePackages) { pkg in
-                        let used = store.classesUsed(for: pkg.id)
-                        Text("\(pkg.name) (\(used)/\(pkg.totalClasses))").tag(UUID?.some(pkg.id))
+                Divider()
+
+                formRow("Package") {
+                    Picker("", selection: $packageID) {
+                        Text("Select Package").tag(UUID?.none)
+                        ForEach(availablePackages) { pkg in
+                            let used = store.classesUsed(for: pkg.id)
+                            Text("\(pkg.name) (\(used)/\(pkg.totalClasses))").tag(UUID?.some(pkg.id))
+                        }
                     }
+                    .labelsHidden()
+                    .frame(width: 220, alignment: .trailing)
                 }
 
-                DatePicker("Date", selection: $date, displayedComponents: .date)
+                Divider()
 
-                Picker("Duration", selection: $durationMinutes) {
-                    ForEach(durations, id: \.self) { d in
-                        Text("\(d) min").tag(d)
-                    }
+                formRow("Date") {
+                    DatePicker("", selection: $date, displayedComponents: .date)
+                        .labelsHidden()
+                        .datePickerStyle(.compact)
+                        .frame(width: 140, alignment: .trailing)
                 }
 
-                TextField("Notes", text: $notes, axis: .vertical)
-                    .lineLimit(2)
+                Divider()
+
+                formRow("Duration") {
+                    Picker("", selection: $durationMinutes) {
+                        ForEach(durations, id: \.self) { d in
+                            Text("\(d) min").tag(d)
+                        }
+                    }
+                    .labelsHidden()
+                    .frame(width: 120, alignment: .trailing)
+                }
+
+                Divider()
+
+                formRow("Notes") {
+                    TextField("Notes", text: $notes, axis: .vertical)
+                        .textFieldStyle(.roundedBorder)
+                        .lineLimit(2...4)
+                }
             }
-            .formStyle(.grouped)
-
+        } actions: {
             HStack {
                 Button("Cancel") { dismiss() }
                     .keyboardShortcut(.cancelAction)
@@ -80,8 +110,19 @@ struct ClassFormView: View {
                 .keyboardShortcut(.defaultAction)
                 .disabled(studentID == nil || teacherID == nil || packageID == nil)
             }
-            .padding()
         }
-        .frame(width: 450, height: 380)
+    }
+
+    @ViewBuilder
+    private func formRow<Content: View>(_ label: String, @ViewBuilder content: () -> Content) -> some View {
+        HStack(alignment: .center, spacing: 16) {
+            Text(label)
+                .frame(width: 150, alignment: .leading)
+
+            content()
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 }

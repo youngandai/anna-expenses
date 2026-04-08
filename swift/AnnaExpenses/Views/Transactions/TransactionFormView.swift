@@ -16,40 +16,67 @@ struct TransactionFormView: View {
     }
 
     var body: some View {
-        VStack(spacing: 16) {
-            Text("Add Transaction")
-                .font(.title2.bold())
-
-            Form {
-                DatePicker("Date", selection: $date, displayedComponents: .date)
-                HStack {
-                    TextField("Amount", text: $amount)
-                    Picker("Currency", selection: $currency) {
-                        Text("AED").tag("AED")
-                        Text("RUB").tag("RUB")
-                        Text("USD").tag("USD")
-                    }
-                    .frame(width: 100)
+        RecordSheetContainer(title: "Add Transaction", width: 520) {
+            RecordSheetCard {
+                formRow("Date") {
+                    DatePicker("", selection: $date, displayedComponents: .date)
+                        .labelsHidden()
+                        .datePickerStyle(.compact)
+                        .frame(width: 140, alignment: .trailing)
                 }
-                TextField("Description", text: $description)
 
-                Picker("Student (optional)", selection: $studentID) {
-                    Text("None").tag(UUID?.none)
-                    ForEach(store.students.sorted { $0.name < $1.name }) { student in
-                        Text(student.name).tag(UUID?.some(student.id))
+                Divider()
+
+                formRow("Amount") {
+                    HStack(spacing: 10) {
+                        TextField("Amount", text: $amount)
+                            .textFieldStyle(.roundedBorder)
+
+                        Picker("Currency", selection: $currency) {
+                            Text("AED").tag("AED")
+                            Text("RUB").tag("RUB")
+                            Text("USD").tag("USD")
+                        }
+                        .labelsHidden()
+                        .frame(width: 92)
                     }
+                }
+
+                Divider()
+
+                formRow("Description") {
+                    TextField("Description", text: $description)
+                        .textFieldStyle(.roundedBorder)
+                }
+
+                Divider()
+
+                formRow("Student (optional)") {
+                    Picker("", selection: $studentID) {
+                        Text("None").tag(UUID?.none)
+                        ForEach(store.students.sorted { $0.name < $1.name }) { student in
+                            Text(student.name).tag(UUID?.some(student.id))
+                        }
+                    }
+                    .labelsHidden()
+                    .frame(width: 170, alignment: .trailing)
                 }
                 .onChange(of: studentID) { _, _ in packageID = nil }
 
-                Picker("Package (optional)", selection: $packageID) {
-                    Text("None").tag(UUID?.none)
-                    ForEach(availablePackages) { pkg in
-                        Text(pkg.name).tag(UUID?.some(pkg.id))
+                Divider()
+
+                formRow("Package (optional)") {
+                    Picker("", selection: $packageID) {
+                        Text("None").tag(UUID?.none)
+                        ForEach(availablePackages) { pkg in
+                            Text(pkg.name).tag(UUID?.some(pkg.id))
+                        }
                     }
+                    .labelsHidden()
+                    .frame(width: 170, alignment: .trailing)
                 }
             }
-            .formStyle(.grouped)
-
+        } actions: {
             HStack {
                 Button("Cancel") { dismiss() }
                     .keyboardShortcut(.cancelAction)
@@ -72,8 +99,56 @@ struct TransactionFormView: View {
                 .keyboardShortcut(.defaultAction)
                 .disabled(description.isEmpty || Double(amount) == nil)
             }
-            .padding()
         }
-        .frame(width: 450, height: 400)
+    }
+
+    @ViewBuilder
+    private func formRow<Content: View>(_ label: String, @ViewBuilder content: () -> Content) -> some View {
+        HStack(alignment: .center, spacing: 16) {
+            Text(label)
+                .frame(width: 150, alignment: .leading)
+
+            content()
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+    }
+}
+
+struct RecordSheetContainer<Content: View, Actions: View>: View {
+    let title: String
+    let width: CGFloat
+    @ViewBuilder let content: () -> Content
+    @ViewBuilder let actions: () -> Actions
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Text(title)
+                .font(.title2.bold())
+                .padding(.top, 4)
+
+            content()
+
+            actions()
+        }
+        .padding(24)
+        .frame(width: width)
+    }
+}
+
+struct RecordSheetCard<Content: View>: View {
+    @ViewBuilder let content: () -> Content
+
+    var body: some View {
+        VStack(spacing: 0) {
+            content()
+        }
+        .background(Color(NSColor.controlBackgroundColor))
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(Color.black.opacity(0.06), lineWidth: 1)
+        }
     }
 }

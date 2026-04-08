@@ -74,34 +74,70 @@ struct PackageFormView: View {
     @State private var notes = ""
 
     var body: some View {
-        VStack(spacing: 16) {
-            Text("Add Package")
-                .font(.title2.bold())
+        RecordSheetContainer(title: "Add Package", width: 520) {
+            RecordSheetCard {
+                formRow("Package Name") {
+                    TextField("Package Name", text: $name)
+                        .textFieldStyle(.roundedBorder)
+                }
 
-            Form {
-                TextField("Package Name", text: $name)
-                Picker("Student", selection: $studentID) {
-                    Text("Select Student").tag(UUID?.none)
-                    ForEach(store.students.sorted { $0.name < $1.name }) { student in
-                        Text(student.name).tag(UUID?.some(student.id))
+                Divider()
+
+                formRow("Student") {
+                    Picker("", selection: $studentID) {
+                        Text("Select Student").tag(UUID?.none)
+                        ForEach(store.students.sorted { $0.name < $1.name }) { student in
+                            Text(student.name).tag(UUID?.some(student.id))
+                        }
+                    }
+                    .labelsHidden()
+                    .frame(width: 200, alignment: .trailing)
+                }
+
+                Divider()
+
+                formRow("Total Classes") {
+                    Stepper(value: $totalClasses, in: 1...100) {
+                        Text("\(totalClasses)")
+                    }
+                    .frame(width: 140, alignment: .trailing)
+                }
+
+                Divider()
+
+                formRow("Price Paid") {
+                    HStack(spacing: 10) {
+                        TextField("Price Paid", text: $pricePaid)
+                            .textFieldStyle(.roundedBorder)
+
+                        Picker("Currency", selection: $currency) {
+                            Text("AED").tag("AED")
+                            Text("RUB").tag("RUB")
+                            Text("USD").tag("USD")
+                        }
+                        .labelsHidden()
+                        .frame(width: 92)
                     }
                 }
-                Stepper("Total Classes: \(totalClasses)", value: $totalClasses, in: 1...100)
-                HStack {
-                    TextField("Price Paid", text: $pricePaid)
-                    Picker("Currency", selection: $currency) {
-                        Text("AED").tag("AED")
-                        Text("RUB").tag("RUB")
-                        Text("USD").tag("USD")
-                    }
-                    .frame(width: 100)
+
+                Divider()
+
+                formRow("Purchase Date") {
+                    DatePicker("", selection: $purchaseDate, displayedComponents: .date)
+                        .labelsHidden()
+                        .datePickerStyle(.compact)
+                        .frame(width: 140, alignment: .trailing)
                 }
-                DatePicker("Purchase Date", selection: $purchaseDate, displayedComponents: .date)
-                TextField("Notes", text: $notes, axis: .vertical)
-                    .lineLimit(2)
+
+                Divider()
+
+                formRow("Notes") {
+                    TextField("Notes", text: $notes, axis: .vertical)
+                        .textFieldStyle(.roundedBorder)
+                        .lineLimit(2...4)
+                }
             }
-            .formStyle(.grouped)
-
+        } actions: {
             HStack {
                 Button("Cancel") { dismiss() }
                     .keyboardShortcut(.cancelAction)
@@ -124,8 +160,19 @@ struct PackageFormView: View {
                 .keyboardShortcut(.defaultAction)
                 .disabled(name.isEmpty || studentID == nil || Double(pricePaid) == nil)
             }
-            .padding()
         }
-        .frame(width: 450, height: 400)
+    }
+
+    @ViewBuilder
+    private func formRow<Content: View>(_ label: String, @ViewBuilder content: () -> Content) -> some View {
+        HStack(alignment: .center, spacing: 16) {
+            Text(label)
+                .frame(width: 150, alignment: .leading)
+
+            content()
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 }

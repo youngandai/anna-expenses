@@ -72,19 +72,36 @@ struct StudentFormView: View {
     @State private var notes = ""
 
     var body: some View {
-        VStack(spacing: 16) {
-            Text("Add Student")
-                .font(.title2.bold())
+        RecordSheetContainer(title: "Add Student", width: 440) {
+            RecordSheetCard {
+                formRow("Name") {
+                    TextField("Name", text: $name)
+                        .textFieldStyle(.roundedBorder)
+                }
 
-            Form {
-                TextField("Name", text: $name)
-                TextField("Email", text: $email)
-                TextField("Phone", text: $phone)
-                TextField("Notes", text: $notes, axis: .vertical)
-                    .lineLimit(3)
+                Divider()
+
+                formRow("Email") {
+                    TextField("Email", text: $email)
+                        .textFieldStyle(.roundedBorder)
+                }
+
+                Divider()
+
+                formRow("Phone") {
+                    TextField("Phone", text: $phone)
+                        .textFieldStyle(.roundedBorder)
+                }
+
+                Divider()
+
+                formRow("Notes") {
+                    TextField("Notes", text: $notes, axis: .vertical)
+                        .textFieldStyle(.roundedBorder)
+                        .lineLimit(2...4)
+                }
             }
-            .formStyle(.grouped)
-
+        } actions: {
             HStack {
                 Button("Cancel") { dismiss() }
                     .keyboardShortcut(.cancelAction)
@@ -103,8 +120,19 @@ struct StudentFormView: View {
                 .keyboardShortcut(.defaultAction)
                 .disabled(name.isEmpty)
             }
-            .padding()
         }
-        .frame(width: 400, height: 300)
+    }
+
+    @ViewBuilder
+    private func formRow<Content: View>(_ label: String, @ViewBuilder content: () -> Content) -> some View {
+        HStack(alignment: .center, spacing: 16) {
+            Text(label)
+                .frame(width: 150, alignment: .leading)
+
+            content()
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 }

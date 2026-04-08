@@ -11,32 +11,60 @@ struct ExpenseFormView: View {
     @State private var notes = ""
 
     var body: some View {
-        VStack(spacing: 16) {
-            Text("Add Expense")
-                .font(.title2.bold())
+        RecordSheetContainer(title: "Add Expense", width: 520) {
+            RecordSheetCard {
+                formRow("Date") {
+                    DatePicker("", selection: $date, displayedComponents: .date)
+                        .labelsHidden()
+                        .datePickerStyle(.compact)
+                        .frame(width: 140, alignment: .trailing)
+                }
 
-            Form {
-                DatePicker("Date", selection: $date, displayedComponents: .date)
-                HStack {
-                    TextField("Amount", text: $amount)
-                    Picker("Currency", selection: $currency) {
-                        Text("AED").tag("AED")
-                        Text("RUB").tag("RUB")
-                        Text("USD").tag("USD")
+                Divider()
+
+                formRow("Amount") {
+                    HStack(spacing: 10) {
+                        TextField("Amount", text: $amount)
+                            .textFieldStyle(.roundedBorder)
+
+                        Picker("Currency", selection: $currency) {
+                            Text("AED").tag("AED")
+                            Text("RUB").tag("RUB")
+                            Text("USD").tag("USD")
+                        }
+                        .labelsHidden()
+                        .frame(width: 92)
                     }
-                    .frame(width: 100)
                 }
-                Picker("Category", selection: $category) {
-                    ForEach(ExpenseCategory.allCases, id: \.self) { cat in
-                        Text(cat.rawValue).tag(cat)
+
+                Divider()
+
+                formRow("Category") {
+                    Picker("", selection: $category) {
+                        ForEach(ExpenseCategory.allCases, id: \.self) { cat in
+                            Text(cat.rawValue).tag(cat)
+                        }
                     }
+                    .labelsHidden()
+                    .frame(width: 170, alignment: .trailing)
                 }
-                TextField("Description", text: $description)
-                TextField("Notes", text: $notes, axis: .vertical)
-                    .lineLimit(2)
+
+                Divider()
+
+                formRow("Description") {
+                    TextField("Description", text: $description)
+                        .textFieldStyle(.roundedBorder)
+                }
+
+                Divider()
+
+                formRow("Notes") {
+                    TextField("Notes", text: $notes, axis: .vertical)
+                        .textFieldStyle(.roundedBorder)
+                        .lineLimit(2...4)
+                }
             }
-            .formStyle(.grouped)
-
+        } actions: {
             HStack {
                 Button("Cancel") { dismiss() }
                     .keyboardShortcut(.cancelAction)
@@ -58,8 +86,19 @@ struct ExpenseFormView: View {
                 .keyboardShortcut(.defaultAction)
                 .disabled(description.isEmpty || Double(amount) == nil)
             }
-            .padding()
         }
-        .frame(width: 450, height: 380)
+    }
+
+    @ViewBuilder
+    private func formRow<Content: View>(_ label: String, @ViewBuilder content: () -> Content) -> some View {
+        HStack(alignment: .center, spacing: 16) {
+            Text(label)
+                .frame(width: 150, alignment: .leading)
+
+            content()
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 }
