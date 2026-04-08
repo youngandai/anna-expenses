@@ -15,7 +15,12 @@ class DataStore {
 
     private var storageDirectory: URL {
         let appSupport = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        let dir = appSupport.appendingPathComponent("AnnaExpenses", isDirectory: true)
+        #if DEBUG
+        let folderName = "AnnaExpenses-Dev"
+        #else
+        let folderName = "AnnaExpenses"
+        #endif
+        let dir = appSupport.appendingPathComponent(folderName, isDirectory: true)
         try? fileManager.createDirectory(at: dir, withIntermediateDirectories: true)
         return dir
     }

@@ -18,8 +18,6 @@ targets:
       - package: Sparkle
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.youngandai.AnnaExpenses
-        PRODUCT_NAME: AnnaExpenses
         SWIFT_VERSION: "5.9"
         MACOSX_DEPLOYMENT_TARGET: "14.0"
         MARKETING_VERSION: "1.0.0"
@@ -29,7 +27,15 @@ targets:
         CODE_SIGN_ENTITLEMENTS: ""
         ENABLE_APP_SANDBOX: "NO"
         GENERATE_INFOPLIST_FILE: "YES"
-        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      configs:
+        Debug:
+          PRODUCT_BUNDLE_IDENTIFIER: com.youngandai.AnnaExpenses.dev
+          PRODUCT_NAME: "Anna Expenses Dev"
+          ASSETCATALOG_COMPILER_APPICON_NAME: DevAppIcon
+        Release:
+          PRODUCT_BUNDLE_IDENTIFIER: com.youngandai.AnnaExpenses
+          PRODUCT_NAME: AnnaExpenses
+          ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     info:
       path: AnnaExpenses/Info.plist
       properties:

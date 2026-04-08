@@ -2,13 +2,20 @@
 # Build, sign, notarize, and package AnnaExpenses.app
 #
 # Usage:
-#   scripts/make-app.sh              — run all steps (local dev)
+#   scripts/make-app.sh              — build dev app and install to ~/Applications
 #   scripts/make-app.sh generate     — generate Xcode project
-#   scripts/make-app.sh build        — xcodebuild
+#   scripts/make-app.sh build        — xcodebuild (Release)
 #   scripts/make-app.sh sign         — code sign the .app bundle
 #   scripts/make-app.sh notarize     — submit for notarization + staple
 #   scripts/make-app.sh dmg          — create DMG installer
 #   scripts/make-app.sh install      — copy to /Applications (local only)
+#
+# The default command builds a Debug configuration ("Anna Expenses Dev")
+# with a separate bundle ID and data store, so it can run alongside the
+# production app without interference.
+#
+# Individual steps (build, sign, notarize, dmg) use Release configuration
+# and are designed for CI workflows.
 #
 # Environment variables:
 #   ANNA_EXPENSES_VERSION  — version string (default: 1.0.0)
@@ -32,6 +39,7 @@ fi
 
 VERSION="${ANNA_EXPENSES_VERSION:-1.0.0}"
 APP_NAME="AnnaExpenses"
+DEV_APP_NAME="Anna Expenses Dev"
 BUILD_APP="build/DerivedData/Build/Products/Release/${APP_NAME}.app"
 APP_DIR="build/${APP_NAME}.app"
 CONTENTS="${APP_DIR}/Contents"
@@ -198,16 +206,28 @@ case "$COMMAND" in
     dmg)       step_dmg ;;
     install)   step_install ;;
     all)
+        # Local dev build: Debug config → ~/Applications
         step_generate
-        step_build
-        step_sign
-        step_notarize
-        step_dmg
-        if [ -z "$CI" ]; then
-            step_install
-        else
-            echo "Done! App bundle at ${APP_DIR}, DMG at build/${APP_NAME}-${VERSION}.dmg"
-        fi
+
+        echo "Building ${DEV_APP_NAME} (Debug) v${VERSION}..."
+        xcodebuild \
+          -project swift/AnnaExpenses.xcodeproj \
+          -scheme AnnaExpenses \
+          -configuration Debug \
+          -derivedDataPath build/DerivedData \
+          -destination 'platform=macOS' \
+          MARKETING_VERSION="$VERSION" \
+          CURRENT_PROJECT_VERSION="$VERSION" \
+          build 2>&1 | tail -5
+
+        DEV_BUILD_APP="build/DerivedData/Build/Products/Debug/${DEV_APP_NAME}.app"
+        DEV_INSTALL_DIR="$HOME/Applications"
+        mkdir -p "$DEV_INSTALL_DIR"
+
+        echo "Installing to ${DEV_INSTALL_DIR}..."
+        rm -rf "${DEV_INSTALL_DIR}/${DEV_APP_NAME}.app"
+        ditto "$DEV_BUILD_APP" "${DEV_INSTALL_DIR}/${DEV_APP_NAME}.app"
+        echo "Done! Installed at ${DEV_INSTALL_DIR}/${DEV_APP_NAME}.app"
         ;;
     *)
         echo "Unknown command: $COMMAND"

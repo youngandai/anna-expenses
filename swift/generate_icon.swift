@@ -2,7 +2,12 @@
 
 import Cocoa
 
-func generateIcon(size: Int) -> NSImage {
+enum IconVariant {
+    case production
+    case dev
+}
+
+func generateIcon(size: Int, variant: IconVariant = .production) -> NSImage {
     let image = NSImage(size: NSSize(width: size, height: size))
     image.lockFocus()
 
@@ -13,11 +18,21 @@ func generateIcon(size: Int) -> NSImage {
     let cornerRadius = s * 0.22
     let path = NSBezierPath(roundedRect: rect, xRadius: cornerRadius, yRadius: cornerRadius)
 
-    // Gradient: warm coral to deep rose
-    let gradient = NSGradient(colors: [
-        NSColor(red: 0.98, green: 0.45, blue: 0.35, alpha: 1.0),  // coral
-        NSColor(red: 0.85, green: 0.22, blue: 0.40, alpha: 1.0),  // deep rose
-    ])!
+    let gradient: NSGradient
+    switch variant {
+    case .production:
+        // Gradient: warm coral to deep rose
+        gradient = NSGradient(colors: [
+            NSColor(red: 0.98, green: 0.45, blue: 0.35, alpha: 1.0),  // coral
+            NSColor(red: 0.85, green: 0.22, blue: 0.40, alpha: 1.0),  // deep rose
+        ])!
+    case .dev:
+        // Gradient: teal to indigo
+        gradient = NSGradient(colors: [
+            NSColor(red: 0.30, green: 0.75, blue: 0.85, alpha: 1.0),  // teal
+            NSColor(red: 0.35, green: 0.30, blue: 0.80, alpha: 1.0),  // indigo
+        ])!
+    }
     gradient.draw(in: path, angle: -45)
 
     // Draw a stylized "A" letter with a currency accent
@@ -50,6 +65,29 @@ func generateIcon(size: Int) -> NSImage {
     // Dollar sign top-left
     let dollar = NSAttributedString(string: "$", attributes: smallAttrs)
     dollar.draw(at: NSPoint(x: s * 0.18, y: s * 0.68))
+
+    // "DEV" banner for dev variant
+    if variant == .dev {
+        let bannerFont = NSFont.systemFont(ofSize: s * 0.10, weight: .heavy)
+        let bannerAttrs: [NSAttributedString.Key: Any] = [
+            .font: bannerFont,
+            .foregroundColor: NSColor.white,
+        ]
+        let bannerStr = NSAttributedString(string: "DEV", attributes: bannerAttrs)
+        let bannerSize = bannerStr.size()
+        let bannerPadH = s * 0.04
+        let bannerPadV = s * 0.02
+        let bannerRect = NSRect(
+            x: s - bannerSize.width - bannerPadH * 2 - s * 0.04,
+            y: s * 0.04,
+            width: bannerSize.width + bannerPadH * 2,
+            height: bannerSize.height + bannerPadV * 2
+        )
+        let bannerPath = NSBezierPath(roundedRect: bannerRect, xRadius: s * 0.04, yRadius: s * 0.04)
+        NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.4).setFill()
+        bannerPath.fill()
+        bannerStr.draw(at: NSPoint(x: bannerRect.minX + bannerPadH, y: bannerRect.minY + bannerPadV))
+    }
 
     image.unlockFocus()
     return image
@@ -87,16 +125,22 @@ let sizes: [(points: Int, scale: Int)] = [
     (512, 1), (512, 2),
 ]
 
-let outputDir = "AnnaExpenses/Assets.xcassets/AppIcon.appiconset"
+let variants: [(variant: IconVariant, dir: String, label: String)] = [
+    (.production, "AnnaExpenses/Assets.xcassets/AppIcon.appiconset", "Production"),
+    (.dev, "AnnaExpenses/Assets.xcassets/DevAppIcon.appiconset", "Dev"),
+]
 
-for entry in sizes {
-    let pixels = entry.points * entry.scale
-    let image = generateIcon(size: pixels)
-    let suffix = entry.scale > 1 ? "@\(entry.scale)x" : ""
-    let filename = "icon_\(entry.points)x\(entry.points)\(suffix).png"
-    let path = "\(outputDir)/\(filename)"
-    savePNG(image, to: path, size: pixels)
-    print("Generated \(filename) (\(pixels)x\(pixels))")
+for variantInfo in variants {
+    print("Generating \(variantInfo.label) icons...")
+    for entry in sizes {
+        let pixels = entry.points * entry.scale
+        let image = generateIcon(size: pixels, variant: variantInfo.variant)
+        let suffix = entry.scale > 1 ? "@\(entry.scale)x" : ""
+        let filename = "icon_\(entry.points)x\(entry.points)\(suffix).png"
+        let path = "\(variantInfo.dir)/\(filename)"
+        savePNG(image, to: path, size: pixels)
+        print("  \(filename) (\(pixels)x\(pixels))")
+    }
 }
 
 print("Done! Icon assets generated.")

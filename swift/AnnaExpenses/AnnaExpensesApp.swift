@@ -1,17 +1,23 @@
 import SwiftUI
+#if !DEBUG
 import Sparkle
+#endif
 
 @main
 struct AnnaExpensesApp: App {
     @State private var store = DataStore()
+    #if !DEBUG
     private let updaterController: SPUStandardUpdaterController
+    #endif
 
     init() {
+        #if !DEBUG
         updaterController = SPUStandardUpdaterController(
             startingUpdater: true,
             updaterDelegate: nil,
             userDriverDelegate: nil
         )
+        #endif
     }
 
     var body: some Scene {
@@ -20,9 +26,11 @@ struct AnnaExpensesApp: App {
                 .environment(store)
         }
         .commands {
+            #if !DEBUG
             CommandGroup(after: .appInfo) {
                 CheckForUpdatesView(updater: updaterController.updater)
             }
+            #endif
 
             // Navigation shortcuts
             CommandMenu("Navigate") {
