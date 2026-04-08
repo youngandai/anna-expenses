@@ -117,7 +117,7 @@ env:
 
 jobs:
   build:
-    runs-on: [self-hosted, macOS, dmg]
+    runs-on: [self-hosted, macOS]
 
     steps:
       - uses: actions/checkout@v4
@@ -238,18 +238,12 @@ jobs:
       # ────────────────────────────────────────────────────────
       # 7. PACKAGE
       # ────────────────────────────────────────────────────────
-      - name: Create DMG
-        env:
-          ANNA_EXPENSES_VERSION: ${{ steps.version.outputs.version }}
-        run: scripts/make-app.sh dmg
-
       - name: Create ZIP archive
         run: |
           ditto -c -k --keepParent \
             "build/$APP_NAME.app" \
             "build/$APP_NAME.app.zip"
           echo "ZIP size: $(du -h "build/$APP_NAME.app.zip" | cut -f1)"
-          echo "DMG size: $(du -h "build/$APP_NAME-${{ steps.version.outputs.version }}.dmg" | cut -f1)"
 
       # ────────────────────────────────────────────────────────
       # 8. UPLOAD ARTIFACT (all builds)
@@ -259,13 +253,6 @@ jobs:
         with:
           name: ${{ env.APP_NAME }}-${{ steps.version.outputs.version }}
           path: build/${{ env.APP_NAME }}.app.zip
-          retention-days: 90
-
-      - name: Upload build artifact (DMG)
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-dmg
-          path: build/${{ env.APP_NAME }}-${{ steps.version.outputs.version }}.dmg
           retention-days: 90
 
       # ────────────────────────────────────────────────────────
@@ -363,7 +350,6 @@ jobs:
             --title "$APP_NAME v${VERSION}" \
             --generate-notes \
             "build/$APP_NAME.app.zip" \
-            "build/$APP_NAME-${VERSION}.dmg" \
             build/appcast.xml
 
       - name: Publish to mac-app-releases
@@ -377,8 +363,7 @@ jobs:
             --repo "$RELEASES_REPO" \
             --title "$APP_NAME v${VERSION}" \
             --notes "$APP_NAME v${VERSION}" \
-            "build/$APP_NAME.app.zip" \
-            "build/$APP_NAME-${VERSION}.dmg"
+            "build/$APP_NAME.app.zip"
 
           # Update appcast.xml in the repo (served via GitHub Pages)
           CLONE_DIR="$RUNNER_TEMP/mac-app-releases"
