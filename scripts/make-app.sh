@@ -1,6 +1,15 @@
 #!/bin/bash
 # Build, sign, notarize, and package AnnaExpenses.app
 #
+# Usage:
+#   scripts/make-app.sh              — run all steps (local dev)
+#   scripts/make-app.sh generate     — generate Xcode project
+#   scripts/make-app.sh build        — xcodebuild
+#   scripts/make-app.sh sign         — code sign the .app bundle
+#   scripts/make-app.sh notarize     — submit for notarization + staple
+#   scripts/make-app.sh dmg          — create DMG installer
+#   scripts/make-app.sh install      — copy to /Applications (local only)
+#
 # Environment variables:
 #   ANNA_EXPENSES_VERSION  — version string (default: 1.0.0)
 #   SIGNING_IDENTITY       — override cert (use "-" for ad-hoc)
@@ -22,97 +31,114 @@ if [ -f .env ]; then
 fi
 
 VERSION="${ANNA_EXPENSES_VERSION:-1.0.0}"
-echo "Building AnnaExpenses v${VERSION}..."
-
-# Generate Xcode project from project.yml
-echo "Generating Xcode project..."
-cd swift
-xcodegen generate
-cd ..
-
-# Build
-echo "Building with xcodebuild..."
-xcodebuild \
-  -project swift/AnnaExpenses.xcodeproj \
-  -scheme AnnaExpenses \
-  -configuration Release \
-  -derivedDataPath build/DerivedData \
-  -destination 'platform=macOS' \
-  MARKETING_VERSION="$VERSION" \
-  CURRENT_PROJECT_VERSION="$VERSION" \
-  build 2>&1 | tail -5
-
 APP_NAME="AnnaExpenses"
 BUILD_APP="build/DerivedData/Build/Products/Release/${APP_NAME}.app"
 APP_DIR="build/${APP_NAME}.app"
-
-echo "Copying built .app bundle..."
-rm -rf "$APP_DIR"
-# Using ditto for consistency with the rest of this script (lines 116, 145).
-# cp -R also preserves xattrs on macOS and works fine for this app — tested 2026-04-06.
-ditto "$BUILD_APP" "$APP_DIR"
-
 CONTENTS="${APP_DIR}/Contents"
 SPARKLE_FW="${CONTENTS}/Frameworks/Sparkle.framework"
 
-# --- Code Signing ---
-# Unlock CI keychain if present
-if [ -n "$KEYCHAIN_PATH" ] && [ -n "$KEYCHAIN_PASSWORD" ]; then
-    echo "Unlocking CI keychain..."
-    security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-fi
-
-IDENTITY="${SIGNING_IDENTITY:-}"
-if [ -z "$IDENTITY" ]; then
-    if [ -n "$KEYCHAIN_PATH" ]; then
-        IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep "Developer ID Application" | head -1 | sed 's/.*"\(.*\)".*/\1/' || true)
-    else
-        IDENTITY=$(security find-identity -v -p codesigning | grep "Developer ID Application" | head -1 | sed 's/.*"\(.*\)".*/\1/' || true)
-    fi
+# ── Resolve signing identity ──
+resolve_identity() {
+    IDENTITY="${SIGNING_IDENTITY:-}"
     if [ -z "$IDENTITY" ]; then
-        echo "ERROR: No Developer ID Application certificate found."
-        echo "Install one from https://developer.apple.com/account/resources/certificates"
-        echo "or set SIGNING_IDENTITY=\"-\" for ad-hoc signing (Gatekeeper will block the app)."
-        exit 1
+        if [ -n "$KEYCHAIN_PATH" ]; then
+            # Use SHA-1 hash to avoid ambiguity when the same cert
+            # exists in both the CI keychain and login keychain
+            IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep "Developer ID Application" | head -1 | awk '{print $2}' || true)
+        else
+            IDENTITY=$(security find-identity -v -p codesigning | grep "Developer ID Application" | head -1 | sed 's/.*"\(.*\)".*/\1/' || true)
+        fi
+        if [ -z "$IDENTITY" ]; then
+            echo "ERROR: No Developer ID Application certificate found."
+            echo "Install one from https://developer.apple.com/account/resources/certificates"
+            echo "or set SIGNING_IDENTITY=\"-\" for ad-hoc signing (Gatekeeper will block the app)."
+            exit 1
+        fi
     fi
-fi
+}
 
-if [ "$IDENTITY" = "-" ]; then
-    echo "Code signing (ad-hoc)..."
-else
-    echo "Code signing with: ${IDENTITY}"
-fi
+# ── Steps ──
 
-CODESIGN_ARGS=(--force --sign "$IDENTITY" --timestamp)
-if [ "$IDENTITY" != "-" ]; then
-    CODESIGN_ARGS+=(--options runtime)
-fi
-if [ -n "$KEYCHAIN_PATH" ]; then
-    CODESIGN_ARGS+=(--keychain "$KEYCHAIN_PATH")
-fi
+step_generate() {
+    echo "Generating Xcode project..."
+    cd swift
+    xcodegen generate
+    cd ..
+}
 
-# Sign Sparkle framework components inside-out
+step_build() {
+    echo "Building AnnaExpenses v${VERSION}..."
+    xcodebuild \
+      -project swift/AnnaExpenses.xcodeproj \
+      -scheme AnnaExpenses \
+      -configuration Release \
+      -derivedDataPath build/DerivedData \
+      -destination 'platform=macOS' \
+      MARKETING_VERSION="$VERSION" \
+      CURRENT_PROJECT_VERSION="$VERSION" \
+      build 2>&1 | tail -5
 
-find "$SPARKLE_FW" -name "*.xpc" -type d | while read -r xpc; do
-    codesign "${CODESIGN_ARGS[@]}" "$xpc"
-done
+    echo "Copying built .app bundle..."
+    rm -rf "$APP_DIR"
+    ditto "$BUILD_APP" "$APP_DIR"
+}
 
-find "$SPARKLE_FW" -name "*.app" -type d | while read -r app; do
-    codesign "${CODESIGN_ARGS[@]}" "$app"
-done
+step_sign() {
+    resolve_identity
 
-for helper in "$SPARKLE_FW"/Versions/B/Autoupdate; do
-    [ -f "$helper" ] && codesign "${CODESIGN_ARGS[@]}" "$helper"
-done
+    # Unlock CI keychain if present
+    if [ -n "$KEYCHAIN_PATH" ] && [ -n "$KEYCHAIN_PASSWORD" ]; then
+        echo "Unlocking CI keychain..."
+        security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+    fi
 
-codesign "${CODESIGN_ARGS[@]}" "$SPARKLE_FW"
-codesign "${CODESIGN_ARGS[@]}" "$APP_DIR"
+    if [ "$IDENTITY" = "-" ]; then
+        echo "Code signing (ad-hoc)..."
+    else
+        echo "Code signing with: ${IDENTITY}"
+    fi
 
-echo "Verifying code signature..."
-codesign --verify --deep --strict "$APP_DIR"
+    CODESIGN_ARGS=(--force --sign "$IDENTITY" --timestamp)
+    if [ "$IDENTITY" != "-" ]; then
+        CODESIGN_ARGS+=(--options runtime)
+    fi
+    if [ -n "$KEYCHAIN_PATH" ]; then
+        CODESIGN_ARGS+=(--keychain "$KEYCHAIN_PATH")
+    fi
 
-# --- Notarization ---
-if [ "$IDENTITY" != "-" ] && [ -n "$APPLE_ID" ] && [ -n "$APPLE_TEAM_ID" ] && [ -n "$NOTARIZATION_PASSWORD" ]; then
+    # Sign Sparkle framework components inside-out
+    find "$SPARKLE_FW" -name "*.xpc" -type d | while read -r xpc; do
+        codesign "${CODESIGN_ARGS[@]}" "$xpc"
+    done
+
+    find "$SPARKLE_FW" -name "*.app" -type d | while read -r app; do
+        codesign "${CODESIGN_ARGS[@]}" "$app"
+    done
+
+    for helper in "$SPARKLE_FW"/Versions/B/Autoupdate; do
+        [ -f "$helper" ] && codesign "${CODESIGN_ARGS[@]}" "$helper"
+    done
+
+    codesign "${CODESIGN_ARGS[@]}" "$SPARKLE_FW"
+    codesign "${CODESIGN_ARGS[@]}" "$APP_DIR"
+
+    echo "Verifying code signature..."
+    codesign --verify --deep --strict "$APP_DIR"
+}
+
+step_notarize() {
+    resolve_identity
+
+    if [ "$IDENTITY" = "-" ]; then
+        echo "Skipping notarization (ad-hoc signing)"
+        return
+    fi
+
+    if [ -z "$APPLE_ID" ] || [ -z "$APPLE_TEAM_ID" ] || [ -z "$NOTARIZATION_PASSWORD" ]; then
+        echo "Skipping notarization (set APPLE_ID, APPLE_TEAM_ID, NOTARIZATION_PASSWORD to enable)"
+        return
+    fi
+
     echo "Submitting for notarization..."
     ZIP_PATH="build/${APP_NAME}-notarize.zip"
     ditto -c -k --keepParent "$APP_DIR" "$ZIP_PATH"
@@ -135,32 +161,57 @@ if [ "$IDENTITY" != "-" ] && [ -n "$APPLE_ID" ] && [ -n "$APPLE_TEAM_ID" ] && [ 
     xcrun stapler staple "$APP_DIR"
     rm -f "$ZIP_PATH"
     echo "Notarization complete."
-else
-    if [ "$IDENTITY" != "-" ]; then
-        echo "Skipping notarization (set APPLE_ID, APPLE_TEAM_ID, NOTARIZATION_PASSWORD to enable)"
-    fi
-fi
+}
 
-# --- Create DMG ---
-echo "Creating DMG..."
-DMG_PATH="build/${APP_NAME}-${VERSION}.dmg"
-rm -f "$DMG_PATH"
-create-dmg \
-  --volname "$APP_NAME" \
-  --window-pos 200 120 \
-  --window-size 600 400 \
-  --icon-size 100 \
-  --icon "$APP_NAME.app" 150 190 \
-  --app-drop-link 450 190 \
-  "$DMG_PATH" \
-  "$APP_DIR"
-echo "DMG created at ${DMG_PATH}"
+step_dmg() {
+    echo "Creating DMG..."
+    DMG_PATH="build/${APP_NAME}-${VERSION}.dmg"
+    rm -f "$DMG_PATH"
+    create-dmg \
+      --volname "$APP_NAME" \
+      --window-pos 200 120 \
+      --window-size 600 400 \
+      --icon-size 100 \
+      --icon "$APP_NAME.app" 150 190 \
+      --app-drop-link 450 190 \
+      "$DMG_PATH" \
+      "$APP_DIR"
+    echo "DMG created at ${DMG_PATH}"
+}
 
-if [ -z "$CI" ]; then
+step_install() {
     echo "Installing to /Applications..."
     rm -rf "/Applications/${APP_NAME}.app"
     ditto "$APP_DIR" "/Applications/${APP_NAME}.app"
     echo "Done! Installed at /Applications/${APP_NAME}.app"
-else
-    echo "Done! App bundle at ${APP_DIR}, DMG at ${DMG_PATH}"
-fi
+}
+
+# ── Dispatch ──
+
+COMMAND="${1:-all}"
+
+case "$COMMAND" in
+    generate)  step_generate ;;
+    build)     step_build ;;
+    sign)      step_sign ;;
+    notarize)  step_notarize ;;
+    dmg)       step_dmg ;;
+    install)   step_install ;;
+    all)
+        step_generate
+        step_build
+        step_sign
+        step_notarize
+        step_dmg
+        if [ -z "$CI" ]; then
+            step_install
+        else
+            echo "Done! App bundle at ${APP_DIR}, DMG at build/${APP_NAME}-${VERSION}.dmg"
+        fi
+        ;;
+    *)
+        echo "Unknown command: $COMMAND"
+        echo "Usage: $0 {generate|build|sign|notarize|dmg|install|all}"
+        exit 1
+        ;;
+esac

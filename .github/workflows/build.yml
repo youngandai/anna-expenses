@@ -87,7 +87,7 @@
 #     Removes keychain file and drops it from the search list. Always do
 #     this in cleanup to avoid leaking certificates between builds.
 
-name: Build AnnaExpenses (v2)
+name: Build AnnaExpenses
 
 on:
   push:
@@ -189,35 +189,60 @@ jobs:
           security find-identity -v -p codesigning "$KEYCHAIN_PATH"
 
       # ────────────────────────────────────────────────────────
-      # 3. BUILD
+      # 3. GENERATE XCODE PROJECT
       # ────────────────────────────────────────────────────────
-      - name: Build app (dev, ad-hoc signing)
+      - name: Generate Xcode project
+        env:
+          ANNA_EXPENSES_VERSION: ${{ steps.version.outputs.version }}
+        run: scripts/make-app.sh generate
+
+      # ────────────────────────────────────────────────────────
+      # 4. BUILD
+      # ────────────────────────────────────────────────────────
+      - name: Build with xcodebuild
+        env:
+          ANNA_EXPENSES_VERSION: ${{ steps.version.outputs.version }}
+        run: scripts/make-app.sh build
+
+      # ────────────────────────────────────────────────────────
+      # 5. SIGN
+      # ────────────────────────────────────────────────────────
+      - name: Code sign (ad-hoc)
         if: steps.version.outputs.is_release != 'true'
         env:
           ANNA_EXPENSES_VERSION: ${{ steps.version.outputs.version }}
           SIGNING_IDENTITY: "-"
-          CI: "true"
-        run: scripts/make-app.sh
+        run: scripts/make-app.sh sign
 
-      - name: Build app (release, Developer ID + notarization)
+      - name: Code sign (Developer ID)
         if: steps.version.outputs.is_release == 'true'
         env:
           ANNA_EXPENSES_VERSION: ${{ steps.version.outputs.version }}
           KEYCHAIN_PATH: ${{ steps.keychain.outputs.path }}
           KEYCHAIN_PASSWORD: ${{ steps.keychain.outputs.password }}
+        run: scripts/make-app.sh sign
+
+      # ────────────────────────────────────────────────────────
+      # 6. NOTARIZE (release only)
+      # ────────────────────────────────────────────────────────
+      - name: Notarize app
+        if: steps.version.outputs.is_release == 'true'
+        env:
+          ANNA_EXPENSES_VERSION: ${{ steps.version.outputs.version }}
+          KEYCHAIN_PATH: ${{ steps.keychain.outputs.path }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           NOTARIZATION_PASSWORD: ${{ secrets.NOTARIZATION_PASSWORD }}
-          CI: "true"
-        run: scripts/make-app.sh
+        run: scripts/make-app.sh notarize
 
       # ────────────────────────────────────────────────────────
-      # 4. PACKAGE
-      #
-      # ditto creates a proper macOS zip that preserves resource
-      # forks and extended attributes. The zip is used for Sparkle
-      # updates. The DMG is created by make-app.sh for user downloads.
+      # 7. PACKAGE
       # ────────────────────────────────────────────────────────
+      - name: Create DMG
+        env:
+          ANNA_EXPENSES_VERSION: ${{ steps.version.outputs.version }}
+        run: scripts/make-app.sh dmg
+
       - name: Create ZIP archive
         run: |
           ditto -c -k --keepParent \
@@ -227,7 +252,7 @@ jobs:
           echo "DMG size: $(du -h "build/$APP_NAME-${{ steps.version.outputs.version }}.dmg" | cut -f1)"
 
       # ────────────────────────────────────────────────────────
-      # 5. UPLOAD ARTIFACT (all builds)
+      # 8. UPLOAD ARTIFACT (all builds)
       # ────────────────────────────────────────────────────────
       - name: Upload build artifact (ZIP)
         uses: actions/upload-artifact@v4
@@ -244,7 +269,7 @@ jobs:
           retention-days: 90
 
       # ────────────────────────────────────────────────────────
-      # 6. SPARKLE SIGNING (release only)
+      # 9. SPARKLE SIGNING (release only)
       #
       # sign_update creates an Ed25519 signature of the archive.
       # This is Sparkle's own verification layer, separate from
@@ -280,7 +305,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       # ────────────────────────────────────────────────────────
-      # 7. GENERATE APPCAST (release only)
+      # 10. GENERATE APPCAST (release only)
       #
       # The appcast.xml is an RSS 2.0 feed that Sparkle polls to
       # discover new versions. It contains:
@@ -320,7 +345,7 @@ jobs:
           APPCAST
 
       # ────────────────────────────────────────────────────────
-      # 8. PUBLISH RELEASE (release only)
+      # 11. PUBLISH RELEASE (release only)
       #
       # Two destinations:
       #   a) Source repo — a GitHub Release for tracking history
@@ -370,7 +395,7 @@ jobs:
           rm -rf "$CLONE_DIR"
 
       # ────────────────────────────────────────────────────────
-      # 9. CLEANUP
+      # 12. CLEANUP
       #
       # Always delete the temporary keychain, even if the build
       # failed, to avoid leaking certificates on the runner.
