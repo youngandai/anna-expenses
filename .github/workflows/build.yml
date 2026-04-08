@@ -374,6 +374,8 @@ jobs:
           cd "$CLONE_DIR"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Clear any inherited helper so pushes use the token embedded in the origin URL.
+          git config credential.helper ""
           git add "$APPCAST_DIR/appcast.xml"
           git commit -m "Update $APP_NAME appcast for v${VERSION}" || echo "No appcast changes to commit"
           git push origin main
