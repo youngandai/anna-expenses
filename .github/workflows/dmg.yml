@@ -1,8 +1,11 @@
-# Build a DMG installer for AnnaExpenses.
+# Create a DMG installer from an existing release .zip.
 #
-# This is a manually-triggered workflow for creating a pretty DMG with
-# drag-to-Applications layout. DMGs are only needed for new users — existing
-# users get updates via Sparkle auto-update.
+# This is a manually-triggered workflow that downloads the already-built,
+# signed, and notarized .zip from a GitHub Release and wraps it in a
+# pretty DMG with drag-to-Applications layout.
+#
+# DMGs are only needed for new users — existing users get updates via
+# Sparkle auto-update.
 #
 # The DMG uses `create-dmg` which requires AppleScript/Finder access,
 # so it must run on a self-hosted runner with the `dmg` label where
@@ -14,8 +17,8 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version tag to build DMG from (e.g. v1.2.3). Leave empty to build from latest main."
-        required: false
+        description: "Version tag (e.g. v1.2.3). Must have an existing release with a .zip artifact."
+        required: true
         type: string
 
 permissions:
@@ -31,99 +34,38 @@ jobs:
     runs-on: [self-hosted, macOS, dmg]
 
     steps:
-      - name: Determine ref and version
+      - name: Determine version
         id: version
         run: |
-          INPUT_VERSION="${{ inputs.version }}"
-          if [ -n "$INPUT_VERSION" ]; then
-            # Strip leading 'v' if present
-            VERSION="${INPUT_VERSION#v}"
-            REF="v${VERSION}"
-          else
-            VERSION="0.0.0-dev"
-            REF="${GITHUB_SHA}"
-          fi
+          # Strip leading 'v' if present
+          VERSION="${{ inputs.version }}"
+          VERSION="${VERSION#v}"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "ref=$REF" >> $GITHUB_OUTPUT
-          echo "Building DMG for $APP_NAME v$VERSION (ref=$REF)"
+          echo "Creating DMG for $APP_NAME v$VERSION"
 
       - uses: actions/checkout@v4
         with:
-          ref: ${{ steps.version.outputs.ref }}
+          ref: v${{ steps.version.outputs.version }}
+          sparse-checkout: scripts
 
-      # ── Import signing certificate ──
-      - name: Import Developer ID certificate
-        id: keychain
-        if: inputs.version != ''
+      # ── Download the existing release .zip ──
+      - name: Download release ZIP
         env:
-          CERTIFICATE_P12: ${{ secrets.DEVELOPER_ID_CERTIFICATE_P12 }}
-          CERTIFICATE_PASSWORD: ${{ secrets.DEVELOPER_ID_CERTIFICATE_PASSWORD }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
-          KEYCHAIN_PATH="$RUNNER_TEMP/signing-${{ github.run_id }}.keychain-db"
-          KEYCHAIN_PASSWORD="$(openssl rand -base64 32)"
+          mkdir -p build
+          gh release download "v${VERSION}" \
+            --pattern "$APP_NAME.app.zip" \
+            --dir build
+          echo "Downloaded ZIP: $(du -h "build/$APP_NAME.app.zip" | cut -f1)"
 
-          echo "path=$KEYCHAIN_PATH" >> $GITHUB_OUTPUT
-          echo "password=$KEYCHAIN_PASSWORD" >> $GITHUB_OUTPUT
-
-          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-
-          CERT_FILE="$RUNNER_TEMP/certificate.p12"
-          echo "$CERTIFICATE_P12" | base64 --decode > "$CERT_FILE"
-          security import "$CERT_FILE" \
-            -P "$CERTIFICATE_PASSWORD" \
-            -T /usr/bin/codesign \
-            -T /usr/bin/security \
-            -t cert -f pkcs12 \
-            -k "$KEYCHAIN_PATH"
-          rm -f "$CERT_FILE"
-
-          security set-key-partition-list -S apple-tool:,apple: \
-            -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security list-keychains -d user -s "$KEYCHAIN_PATH" \
-            $(security list-keychains -d user | tr -d '"')
-
-          echo "--- Imported identities ---"
-          security find-identity -v -p codesigning "$KEYCHAIN_PATH"
-
-      # ── Build the app ──
-      - name: Generate Xcode project
-        env:
-          ANNA_EXPENSES_VERSION: ${{ steps.version.outputs.version }}
-        run: scripts/make-app.sh generate
-
-      - name: Build
-        env:
-          ANNA_EXPENSES_VERSION: ${{ steps.version.outputs.version }}
-        run: scripts/make-app.sh build
-
-      # ── Sign ──
-      - name: Code sign (ad-hoc)
-        if: inputs.version == ''
-        env:
-          ANNA_EXPENSES_VERSION: ${{ steps.version.outputs.version }}
-          SIGNING_IDENTITY: "-"
-        run: scripts/make-app.sh sign
-
-      - name: Code sign (Developer ID)
-        if: inputs.version != ''
-        env:
-          ANNA_EXPENSES_VERSION: ${{ steps.version.outputs.version }}
-          KEYCHAIN_PATH: ${{ steps.keychain.outputs.path }}
-          KEYCHAIN_PASSWORD: ${{ steps.keychain.outputs.password }}
-        run: scripts/make-app.sh sign
-
-      # ── Notarize (release only) ──
-      - name: Notarize app
-        if: inputs.version != ''
-        env:
-          ANNA_EXPENSES_VERSION: ${{ steps.version.outputs.version }}
-          KEYCHAIN_PATH: ${{ steps.keychain.outputs.path }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          NOTARIZATION_PASSWORD: ${{ secrets.NOTARIZATION_PASSWORD }}
-        run: scripts/make-app.sh notarize
+      # ── Extract .app from ZIP ──
+      - name: Extract app bundle
+        run: |
+          ditto -x -k "build/$APP_NAME.app.zip" build/
+          echo "Extracted $APP_NAME.app"
+          codesign -dvv "build/$APP_NAME.app" 2>&1 | head -5
 
       # ── Create DMG ──
       - name: Create DMG
@@ -140,18 +82,15 @@ jobs:
           retention-days: 90
 
       - name: Attach DMG to GitHub releases
-        if: inputs.version != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          # Attach to source repo release
           gh release upload "v${VERSION}" \
             "build/$APP_NAME-${VERSION}.dmg" \
             --clobber || echo "No source release found for v${VERSION}"
 
       - name: Attach DMG to mac-app-releases
-        if: inputs.version != ''
         env:
           GH_TOKEN: ${{ secrets.MAC_APP_RELEASES_TOKEN }}
           VERSION: ${{ steps.version.outputs.version }}
@@ -160,13 +99,3 @@ jobs:
             "build/$APP_NAME-${VERSION}.dmg" \
             --repo "$RELEASES_REPO" \
             --clobber || echo "No release found for $APPCAST_DIR-v${VERSION}"
-
-      # ── Cleanup ──
-      - name: Clean up signing keychain
-        if: always() && inputs.version != ''
-        run: |
-          KEYCHAIN_PATH="${{ steps.keychain.outputs.path }}"
-          if [ -n "$KEYCHAIN_PATH" ] && [ -f "$KEYCHAIN_PATH" ]; then
-            security delete-keychain "$KEYCHAIN_PATH"
-            echo "Deleted temporary keychain"
-          fi
