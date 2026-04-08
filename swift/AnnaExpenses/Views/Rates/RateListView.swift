@@ -69,9 +69,11 @@ struct RateListView: View {
             Button(action: { showingBulkImport = true }) {
                 Label("Bulk Import", systemImage: "square.and.arrow.down")
             }
+            .help("Import Rates (Cmd+I)")
             Button(action: { showingAddSheet = true }) {
                 Label("Add Rate", systemImage: "plus")
             }
+            .help("New Item (Cmd+N)")
         }
         .sheet(isPresented: $showingAddSheet) {
             RateFormView()

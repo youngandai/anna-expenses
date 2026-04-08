@@ -52,6 +52,7 @@ struct StudentListView: View {
             Button(action: { showingAddSheet = true }) {
                 Label("Add Student", systemImage: "plus")
             }
+            .help("New Item (Cmd+N)")
         }
         .sheet(isPresented: $showingAddSheet) {
             StudentFormView()

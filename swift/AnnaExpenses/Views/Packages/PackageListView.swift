@@ -51,6 +51,7 @@ struct PackageListView: View {
             Button(action: { showingAddSheet = true }) {
                 Label("Add Package", systemImage: "plus")
             }
+            .help("New Item (Cmd+N)")
         }
         .sheet(isPresented: $showingAddSheet) {
             PackageFormView()

@@ -73,6 +73,7 @@ struct TransactionListView: View {
             Button(action: { showingAddSheet = true }) {
                 Label("Add Transaction", systemImage: "plus")
             }
+            .help("New Item (Cmd+N)")
         }
         .sheet(isPresented: $showingAddSheet) {
             TransactionFormView()

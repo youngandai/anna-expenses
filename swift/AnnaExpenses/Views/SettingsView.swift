@@ -38,6 +38,7 @@ struct KeyboardShortcutsSettingsView: View {
         ("Cmd+I", "Import..."),
         ("Cmd+[", "Previous month (Dashboard / Teacher Payments)"),
         ("Cmd+]", "Next month (Dashboard / Teacher Payments)"),
+        ("Cmd+U", "Check for Updates"),
         ("Cmd+,", "Settings"),
         ("Escape", "Close dialog"),
         ("Return", "Save / confirm"),

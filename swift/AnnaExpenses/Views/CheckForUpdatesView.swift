@@ -12,6 +12,7 @@ struct CheckForUpdatesView: View {
 
     var body: some View {
         Button("Check for Updates…", action: updater.checkForUpdates)
+            .keyboardShortcut("u", modifiers: .command)
             .disabled(!checkForUpdatesViewModel.canCheckForUpdates)
     }
 }

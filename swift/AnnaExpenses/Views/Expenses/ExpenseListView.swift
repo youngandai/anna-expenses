@@ -67,6 +67,7 @@ struct ExpenseListView: View {
             Button(action: { showingAddSheet = true }) {
                 Label("Add Expense", systemImage: "plus")
             }
+            .help("New Item (Cmd+N)")
         }
         .sheet(isPresented: $showingAddSheet) {
             ExpenseFormView()
