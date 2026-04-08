@@ -117,7 +117,7 @@ env:
 
 jobs:
   build:
-    runs-on: [self-hosted, macOS]
+    runs-on: [self-hosted, macOS, dmg]
 
     steps:
       - uses: actions/checkout@v4
