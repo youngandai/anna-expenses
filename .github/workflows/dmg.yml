@@ -43,7 +43,7 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Creating DMG for $APP_NAME v$VERSION"
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: v${{ steps.version.outputs.version }}
           sparse-checkout: scripts
@@ -75,7 +75,7 @@ jobs:
 
       # ── Upload ──
       - name: Upload DMG artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-dmg
           path: build/${{ env.APP_NAME }}-${{ steps.version.outputs.version }}.dmg
